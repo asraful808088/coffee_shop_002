@@ -1,0 +1,6 @@
+/client/node_modules
+/client/.next
+# /client/.env
+/admin/node_modules
+# /admin/.env
+/test
