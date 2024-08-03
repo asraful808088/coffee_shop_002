@@ -1,4 +1,4 @@
-import { postHeroContext } from "network/about/about";
+import { getAboutInfo, postHeroContext } from "network/about/about";
 import { useEffect, useState } from "react";
 import SimpleHeroImage from "../components/simpleHeroImage/simpleHeroImage";
 import style from "./style.module.css";
@@ -9,9 +9,14 @@ export default function AboutUs() {
     description: "",
     webUrl: null,
     host: "",
+    path: "",
   });
   const [removeImage, setRemoveImage] = useState([]);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getAboutInfo((res) => {
+      console.log(res);
+    });
+  }, []);
   return (
     <div className={`${style.main}`}>
       <SimpleHeroImage
