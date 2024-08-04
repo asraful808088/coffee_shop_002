@@ -28,15 +28,16 @@ export default function SimpleHeroImage({
     fullFile: null,
     title: "",
     description: "",
-    remoteUrl: "",
+    remoteUrl: null,
   });
   useEffect(() => {
     setHeroImage({
       fullFile: fullFile ?? null,
       title: title ?? "",
       description: description ?? "",
+      remoteUrl: remoteUrl,
     });
-  }, [fullFile, title, description]);
+  }, [fullFile, title, description, remoteUrl]);
   return (
     <div className={style.content}>
       <h5>Hero-Image</h5>
@@ -49,6 +50,9 @@ export default function SimpleHeroImage({
             fullWidth
             id={Date.now()}
             onClear={() => {
+              if (onClose) {
+                onClose();
+              }
               setHeroImage({
                 ...heroImage,
                 fullFile: null,

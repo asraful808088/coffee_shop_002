@@ -1,8 +1,8 @@
 import axios from "axios";
 import { config } from "./../../config";
-export function getAboutInfo(result) {
+export function getBlogInfo(result) {
   axios
-    .get(`${config.SERVER_HOST}/about/heroImage`)
+    .get(`${config.SERVER_HOST}/blog/heroImage`)
     .then((res) => {
       if (result) {
         result(res.data);
@@ -29,7 +29,7 @@ export function postHeroContext({ fullFile, title, description, webUrl, oldImage
   formData.append("title", title);
   formData.append("description", description);
   axios
-    .post(`${config.SERVER_HOST}/about/heroImage`, formData, {
+    .post(`${config.SERVER_HOST}/blog/heroImage`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

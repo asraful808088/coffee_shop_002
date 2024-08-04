@@ -1,4 +1,5 @@
 import { TextField } from "@mui/material";
+import { postOurBranch } from "network/page/branch";
 import { getHomeHeroContext, postHomeHeroContext } from "network/page/home";
 import { useEffect, useState } from "react";
 import isEqual from "utility/isEql/isEql";
@@ -23,6 +24,7 @@ export default function Home(params) {
     buttonHide: false,
   });
   const [uploadedImage, setUploadedImage] = useState([]);
+  const [branchImageMemo, setBranchImageMemo] = useState([]);
   const [populerBranch, setPopulerBranch] = useState([
     {
       id: "branch001",
@@ -197,7 +199,26 @@ export default function Home(params) {
           </div>
         ) : null}
       </div>
-
+      {/**
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       */}
       <div className={`${style.content}`}>
         <h5>Our Populer Branch</h5>
         <div className={`${style.branchItems}`}>
@@ -304,8 +325,37 @@ export default function Home(params) {
             );
           })}
         </div>
+        <div className={style.buttonBox}>
+          <div
+            className={style.button}
+            onClick={() => {
+              postOurBranch({ populerBranch, memo: branchImageMemo }, (result) => {});
+            }}
+          >
+            Save
+          </div>
+        </div>
       </div>
-
+      {/**
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       *
+       */}
       <div className={`${style.content}`}>
         <h5>Our New Coffee</h5>
         <div className={`${style.branchItems}`}>
