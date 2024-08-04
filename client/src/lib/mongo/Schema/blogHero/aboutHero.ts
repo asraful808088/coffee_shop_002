@@ -1,12 +1,8 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-  images: {
-    type: [Object],
-    required: true,
-  },
-  header: {
-    type: String,
+  image: {
+    type: Object,
     required: true,
   },
   title: {
@@ -19,7 +15,6 @@ const schema = new mongoose.Schema({
   },
 });
 
-
-const HomeHero =
-  mongoose.models.HomeHero || mongoose.model("HomeHero", schema);
-export default HomeHero;
+const BlogHero =
+  mongoose.models.BlogHero || mongoose.model("BlogHero", schema);
+export default BlogHero;

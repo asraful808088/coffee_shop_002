@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const contentSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   image: {
-    type: String,
+    type: Object,
     required: true,
   },
   title: {
@@ -16,5 +16,5 @@ const contentSchema = new mongoose.Schema({
 });
 
 const AboutHero =
-  mongoose.models.AboutHero || mongoose.model("AboutHero", contentSchema);
+  mongoose.models.AboutHero || mongoose.model("AboutHero", schema);
 export default AboutHero;

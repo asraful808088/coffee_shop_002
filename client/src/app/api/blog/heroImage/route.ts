@@ -1,10 +1,10 @@
 import FileUploader from "@/lib/fileUploadhandler/fileUploadhandler";
-import getAboutHero from "@/lib/mongo/operation/get/aboutHero";
-import insertAboutHero from "@/lib/mongo/operation/insert/aboutHero";
-import AboutHero from "@/lib/mongo/Schema/aboutHero/aboutHero";
+import getBlogHero from "@/lib/mongo/operation/get/blogHero";
+import insertBlogHero from "@/lib/mongo/operation/insert/blogHero";
+import BlogHero from "@/lib/mongo/Schema/blogHero/aboutHero";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, res) {
-  const reuslt = await getAboutHero();
+  const reuslt = await getBlogHero();
   return NextResponse.json({ success: true, data: reuslt[0] });
 }
 
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest, res) {
   });
   if (fileUploadResult.title && fileUploadResult.description) {
     try {
-      await AboutHero.deleteMany();
+      await BlogHero.deleteMany();
     } catch (error) {}
     let data;
     try {
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest, res) {
         title: fileUploadResult.title,
         description: fileUploadResult.description,
       };
-      await insertAboutHero(data);
+      await insertBlogHero(data);
     } catch (error) {}
     return NextResponse.json(
       { success: true, data: { ...data } },
@@ -35,5 +35,5 @@ export async function POST(req: NextRequest, res) {
   } else {
     return NextResponse.json({ success: false }, { status: 400 });
   }
-  console.log(fileUploadResult);
+
 }
