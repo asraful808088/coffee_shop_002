@@ -1,0 +1,19 @@
+.blogItemsBox {
+  display: grid;
+
+  grid-auto-rows: auto;
+  width: 100%;
+  grid-gap: 10px;
+  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+}
+.blogItemsBox .blogItems {
+}
+
+.blogItemsBox .blogItems .inputText {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.blogItemsBox .blogItems .header {
+}

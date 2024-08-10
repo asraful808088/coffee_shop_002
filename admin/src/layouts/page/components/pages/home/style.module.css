@@ -24,6 +24,7 @@
   color: white;
   font-size: 14px;
   cursor: pointer;
+  margin-top: 10px;
 }
 .main .content .contextInput .inputItems {
   display: grid;

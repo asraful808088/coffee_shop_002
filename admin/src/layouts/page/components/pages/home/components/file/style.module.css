@@ -4,6 +4,9 @@
 .fileInputFull {
   width: 100%;
 }
+.fullHeight{
+  height: 100%;
+}
 .fileInput {
   aspect-ratio: 2/1.1;
   background-color: rgba(0, 0, 0, 0.93);

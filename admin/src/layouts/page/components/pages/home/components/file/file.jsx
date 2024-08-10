@@ -3,7 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 import style from "./style.module.css";
 
 // eslint-disable-next-line react/prop-types
-function FileInputRef({ fileUrl, fullWidth = false, onFile, onClear, id }, ref) {
+function FileInputRef(
+  // eslint-disable-next-line react/prop-types
+  { fileUrl, fullWidth = false, onFile, onClear, id, fullheight = false },
+  ref
+) {
   const imageRef = useCreateRef();
 
   const [fullFile, setFullFile] = useState();
@@ -28,7 +32,11 @@ function FileInputRef({ fileUrl, fullWidth = false, onFile, onClear, id }, ref) 
   };
 
   return (
-    <div className={`${style.fileInput} ${fullWidth ? style.fileInputFull : style.fileInput300px}`}>
+    <div
+      className={`${style.fileInput} ${fullWidth ? style.fileInputFull : style.fileInput300px} ${
+        fullheight ? style.fullHeight : ""
+      }`}
+    >
       {fileUrl ? (
         <div
           className={style.cross}

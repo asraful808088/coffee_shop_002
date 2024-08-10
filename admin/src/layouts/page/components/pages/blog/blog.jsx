@@ -1,6 +1,8 @@
+import { TextField } from "@mui/material";
 import { getBlogInfo, postHeroContext } from "network/blog/blog";
 import { useEffect, useState } from "react";
 import SimpleHeroImage from "../components/simpleHeroImage/simpleHeroImage";
+import FileInput from "../home/components/file/file";
 import style from "./style.module.css";
 export default function Blog() {
   const [heroImage, setHeroImage] = useState({
@@ -74,6 +76,26 @@ export default function Blog() {
           });
         }}
       />
+      <div className={style.blogItemsBox}>
+        {[1, 1, 1, 1, 1].map((element, index) => {
+          return (
+            <div className={style.blogItems} key={index}>
+              <FileInput fullWidth />
+              <div className={style.header}>
+                <TextField className={style.inputText} placeholder="name" />
+              </div>
+              <div className={style.des}>
+                <TextField
+                  className={style.inputText}
+                  multiline
+                  rows={6}
+                  placeholder="description"
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

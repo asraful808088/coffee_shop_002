@@ -10,14 +10,9 @@ export default async function FileUploader({
   dir = "image001",
   checkOnlyFile = false,
   backStap = "../../../../../",
+  targetPath,
 }) {
-  const filePath = pth.join(
-    __dirname,
-    backStap,
-    "public",
-    filepath,
-    dir
-  );
+  const filePath = targetPath??pth.join(__dirname, backStap, "public", filepath, dir);
 
   let filecount = 1;
   const fileItems = [];
@@ -29,12 +24,11 @@ export default async function FileUploader({
         await deleteFile(pth.join(filePath, iterator.webUrl));
       } catch (error) {}
     }
-  }else{
-    
+  } else {
   }
 
   for (const iterator of data) {
-    if (iterator[0] == `file-${filecount}`) {
+    if (iterator[0].includes("file-")) {
       const file: File = data.get(`file-${filecount}`) as File;
       let stringFile = null;
 

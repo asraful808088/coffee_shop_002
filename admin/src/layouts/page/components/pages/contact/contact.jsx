@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import { getContactInfo, postHeroContext } from "network/contact/contact";
 import { useEffect, useState } from "react";
 import SimpleHeroImage from "../components/simpleHeroImage/simpleHeroImage";
@@ -74,6 +75,48 @@ export default function Contact() {
           });
         }}
       />
+      <div className={style.info}>
+        <div className={style.item}>
+          <h5 className={style.header}>Map-Link</h5>
+          <TextField />
+        </div>
+        <div className={style.item}>
+          <h5 className={style.header}>Information</h5>
+          <div className={style}>
+            <div>
+              <h6>Address</h6>
+              <TextField className={style.inputTextTags} />
+            </div>
+            <div>
+              <h6>Phone & Hot-Line</h6>
+              <div className={style.inputItems}>
+                <TextField className={style.inputTextTags} />
+                <TextField className={style.inputTextTags} />
+
+                <button className={style.add}>+</button>
+              </div>
+            </div>
+            <div>
+              <h6>Email & Social Media</h6>
+              <div className={style.inputItemss}>
+                <div className={style.keyVal}>
+                  <TextField className={style.inputTextTags} />
+                  <TextField className={style.inputTextTags} />
+                </div>
+                <div>
+                  <TextField className={style.inputTextTags} />
+                  <TextField className={style.inputTextTags} />
+                </div>
+
+                <button className={style.add}>+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={style.buttonBox}>
+          <div className={style.button}>Save</div>
+        </div>
+      </div>
     </div>
   );
 }
