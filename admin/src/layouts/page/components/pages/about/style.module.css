@@ -70,3 +70,19 @@
   cursor: pointer;
   border-radius: 5px;
 }
+
+.addButton {
+  height: 500px;
+  aspect-ratio: 1/1;
+  position: relative;
+  background-color: black;
+  color: white;
+  font-size: 30px;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  margin-top: 20px;
+  cursor: pointer;
+}

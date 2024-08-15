@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema({
   imageItems: { type: Array, required: true },
   mainImage: { type: Object, required: true },
+  _id: { type: String, required: true },
   title: {
     type: String,
     required: true,
@@ -25,6 +26,10 @@ const schema = new mongoose.Schema({
   },
   lin: {
     type: String,
+    required: false,
+  },
+  prevId: {
+    type: Number,
     required: false,
   },
 });

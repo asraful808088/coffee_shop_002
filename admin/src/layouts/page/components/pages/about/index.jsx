@@ -1,8 +1,11 @@
 import { TextField } from "@mui/material";
 import { getAboutInfo, postHeroContext } from "network/about/about";
 import { useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
+import { config } from "../../../../../config";
 import SimpleHeroImage from "../components/simpleHeroImage/simpleHeroImage";
 import FileInput from "../home/components/file/file";
+import { postCshItems } from "./../../../../../network/about/OurSpecialChefs";
 import style from "./style.module.css";
 export default function AboutUs() {
   const [heroImage, setHeroImage] = useState({
@@ -15,11 +18,14 @@ export default function AboutUs() {
   });
   const [removeImage, setRemoveImage] = useState([]);
   const [oldImage, setOldImage] = useState(null);
-  const [oldId, setOldId] = useState([]);
+  const [ourWaiters, setOurwaiters] = useState([]);
+  const [oldChfsId, setOldChfsId] = useState([]);
   const [ourPopulerChfs, setOurPopulerChfs] = useState([]);
-  const [removeImageList, setRemoveImageList] = useState([]);
+  const [removeImageChfsList, setRemoveImageChfsList] = useState([]);
   useEffect(() => {
     getAboutInfo((res) => {
+      setOurPopulerChfs(res?.OSC);
+      setOldChfsId(res?.OSC);
       setHeroImage({
         ...heroImage,
         title: res?.data?.title,
@@ -81,22 +87,181 @@ export default function AboutUs() {
       />
       <h5>{"Our Special Chef's"}</h5>
       <div className={style.cardBox}>
-        {[1, 1, 1, 1, 1].map((element, index) => {
+        {ourPopulerChfs.map((element, index) => {
           return (
             <div className={style.item} key={index}>
               <div className={style.profile}>
-                <FileInput fullWidth fullheight />
+                <FileInput
+                  id={Date.now() + uuid()}
+                  fileUrl={
+                    element.mainImage.fullFile
+                      ? URL.createObjectURL(element?.mainImage?.fullFile)
+                      : element?.mainImage?.webUrl
+                      ? `${config.HOST_NAME}${element?.mainImage?.path}${element?.mainImage?.webUrl}`
+                      : null
+                  }
+                  crossShow
+                  fullWidth
+                  fullheight
+                  onClear={(id) => {
+                    if (id) {
+                      const newItems = ourPopulerChfs.map((element2, index2) => {
+                        if (index2 == index) {
+                          if (element2?.mainImage?.webUrl) {
+                            setRemoveImageChfsList([
+                              ...removeImageChfsList,
+                              { ...element2.mainImage },
+                            ]);
+                          }
+                          return {
+                            ...element2,
+                            mainImage: {},
+                            prevId: element2.prevId ? element2.prevId : element2._id,
+                            _id: uuid(),
+                          };
+                        }
+                        return {
+                          ...element2,
+                        };
+                      });
+                      setOurPopulerChfs(newItems);
+                    } else {
+                      const newItems = ourPopulerChfs.filter((element2, index2) => {
+                        return index2 != index;
+                      });
+                      if (element.imageItems[0]) {
+                        setRemoveImageChfsList([
+                          ...removeImageChfsList,
+                          { ...element.imageItems[0] },
+                        ]);
+                      }
+                      setOurPopulerChfs(newItems);
+                    }
+                  }}
+                  onFile={(file) => {
+                    const newItems = ourPopulerChfs.map((element2, index2) => {
+                      if (index2 == index) {
+                        return {
+                          ...element2,
+                          mainImage: { fullFile: file.fullFile },
+                        };
+                      }
+                      return {
+                        ...element2,
+                      };
+                    });
+                    setOurPopulerChfs(newItems);
+                  }}
+                />
               </div>
               <div className={style.des}>
                 <div className={style.input}>
-                  <TextField className={style.textInput} />
+                  <TextField
+                    placeholder="title"
+                    className={style.textInput}
+                    value={element.title}
+                    onChange={(e) => {
+                      const newItems = ourPopulerChfs.map((element2, index2) => {
+                        if (index2 == index) {
+                          return {
+                            ...element2,
+                            title: e.target.value,
+                            prevId: element2.prevId ? element2.prevId : element2._id,
+                            _id: uuid(),
+                          };
+                        }
+                        return {
+                          ...element2,
+                        };
+                      });
+                      setOurPopulerChfs(newItems);
+                    }}
+                  />
                 </div>
                 <div className={style.input}>
-                  <TextField className={style.textInput} multiline rows={7} />
+                  <TextField
+                    placeholder="description"
+                    className={style.textInput}
+                    multiline
+                    rows={7}
+                    value={element.description}
+                    onChange={(e) => {
+                      const newItems = ourPopulerChfs.map((element2, index2) => {
+                        if (index2 == index) {
+                          return {
+                            ...element2,
+                            description: e.target.value,
+                            prevId: element2.prevId ? element2.prevId : element2._id,
+                            _id: uuid(),
+                          };
+                        }
+                        return {
+                          ...element2,
+                        };
+                      });
+                      setOurPopulerChfs(newItems);
+                    }}
+                  />
                 </div>
               </div>
               <div className={style.sign}>
-                <FileInput fullWidth fullheight />
+                <FileInput
+                  id={Date.now() + uuid() + "file" + index}
+                  fullWidth
+                  fullheight
+                  fileUrl={
+                    !element.imageItems[0]
+                      ? null
+                      : element.imageItems[0].fullFile
+                      ? URL.createObjectURL(element?.imageItems[0]?.fullFile)
+                      : element?.imageItems[0]?.webUrl
+                      ? `${config.HOST_NAME}${element?.imageItems[0]?.path}${element?.imageItems[0]?.webUrl}`
+                      : null
+                  }
+                  onClear={(id) => {
+                    if (id) {
+                      const newItems = ourPopulerChfs.map((element2, index2) => {
+                        if (index2 == index) {
+                          if (element2?.mainImage?.webUrl) {
+                            setRemoveImageChfsList([
+                              ...removeImageChfsList,
+                              { ...element2.imageItems[0] },
+                            ]);
+                          }
+                          return {
+                            ...element2,
+                            imageItems: [],
+                            prevId: element2.prevId ? element2.prevId : element2._id,
+                            _id: uuid(),
+                          };
+                        }
+                        return {
+                          ...element2,
+                        };
+                      });
+                      setOurPopulerChfs(newItems);
+                    } else {
+                      const newItems = ourPopulerChfs.filter((element2, index2) => {
+                        return index2 != index;
+                      });
+                      setOurPopulerChfs(newItems);
+                    }
+                  }}
+                  onFile={(file) => {
+                    const newItems = ourPopulerChfs.map((element2, index2) => {
+                      if (index2 == index) {
+                        return {
+                          ...element2,
+                          imageItems: [{ fullFile: file.fullFile }],
+                        };
+                      }
+                      return {
+                        ...element2,
+                      };
+                    });
+                    setOurPopulerChfs(newItems);
+                  }}
+                />
               </div>
               <div className={style.media}>
                 <div className={style.item}>
@@ -117,7 +282,26 @@ export default function AboutUs() {
                   </div>
                   <div className={style.textInput}>
                     {" "}
-                    <TextField />
+                    <TextField
+                      placeholder="facebook"
+                      value={element.fb}
+                      onChange={(e) => {
+                        const newItems = ourPopulerChfs.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              fb: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+                        setOurPopulerChfs(newItems);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -139,7 +323,26 @@ export default function AboutUs() {
                   </div>
                   <div className={style.textInput}>
                     {" "}
-                    <TextField />
+                    <TextField
+                      placeholder="instagram"
+                      value={element.in}
+                      onChange={(e) => {
+                        const newItems = ourPopulerChfs.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              in: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+                        setOurPopulerChfs(newItems);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -161,7 +364,26 @@ export default function AboutUs() {
                   </div>
                   <div className={style.textInput}>
                     {" "}
-                    <TextField />
+                    <TextField
+                      placeholder="Linkedin"
+                      value={element.lin}
+                      onChange={(e) => {
+                        const newItems = ourPopulerChfs.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              lin: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+                        setOurPopulerChfs(newItems);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -198,16 +420,80 @@ export default function AboutUs() {
                     </svg>
                   </div>
                   <div className={style.textInput}>
-                    <TextField />
+                    <TextField
+                      placeholder="x"
+                      value={element.SX}
+                      onChange={(e) => {
+                        const newItems = ourPopulerChfs.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              SX: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+                        setOurPopulerChfs(newItems);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           );
         })}
+        <div
+          className={style.addButton}
+          onClick={() => {
+            setOurPopulerChfs([
+              ...ourPopulerChfs,
+              {
+                _id: uuid(),
+                imageItems: [],
+                mainImage: {},
+                title: "",
+                description: "",
+                fb: "",
+                SX: "",
+                in: "",
+                lin: "",
+              },
+            ]);
+          }}
+        >
+          +
+        </div>
       </div>
       <div className={style.buttonBox}>
-        <div className={style.button} role="button">
+        <div
+          className={style.button}
+          role="button"
+          onClick={() => {
+            postCshItems(
+              {
+                oldChfsId,
+                ourPopulerChfs,
+                removeImageChfsList,
+              },
+              ({ res, newData }) => {
+                if (res?.data) {
+                  const newItems = ourPopulerChfs.filter((elementx, indexx) => {
+                    const find = newData.find((x, y) => x._id == elementx._id);
+                    if (find) {
+                      return false;
+                    }
+                    return true;
+                  });
+                  setOurPopulerChfs([...newItems, ...res?.data?.data]);
+                }
+              }
+            );
+          }}
+        >
           Save
         </div>
       </div>

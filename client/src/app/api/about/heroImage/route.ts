@@ -1,11 +1,13 @@
 import FileUploader from "@/lib/fileUploadhandler/fileUploadhandler";
 import getAboutHero from "@/lib/mongo/operation/get/aboutHero";
+import getOurSpecialChef from "@/lib/mongo/operation/get/getOurSpecialChef";
 import insertAboutHero from "@/lib/mongo/operation/insert/aboutHero";
 import AboutHero from "@/lib/mongo/Schema/aboutHero/aboutHero";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, res) {
   const reuslt = await getAboutHero();
-  return NextResponse.json({ success: true, data: reuslt[0] });
+  const getOSC = await getOurSpecialChef();
+  return NextResponse.json({ success: true, data: reuslt[0], OSC: getOSC });
 }
 
 export async function POST(req: NextRequest, res) {
