@@ -32,6 +32,15 @@ export default function PageTab({ onClick, active }) {
         }}
       />
       <Tabbutton
+        tabname="Items"
+        active={active == tabItem.ITEMS}
+        onClick={(name) => {
+          if (onClick) {
+            onClick(tabItem.ITEMS);
+          }
+        }}
+      />
+      <Tabbutton
         tabname="Blog"
         active={active == tabItem.BLOG}
         onClick={(name) => {

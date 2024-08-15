@@ -52,11 +52,29 @@ button {
 
 .keyVal {
   margin-bottom: 10px;
+  display: flex;
 }
 .inputItems {
   display: flex;
   margin-bottom: 10px;
 }
 .inputTextTags {
-  margin-right: 10px;
+  margin-right: 10px !important;
+}
+.phoneinputBox {
+  display: flex;
+  align-items: center;
+}
+.cross {
+  font-weight: 900;
+  transform: rotate(45deg) !important;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.crossbar {
+  font-weight: 900;
+  transform: rotate(45deg) !important;
+  margin-right: 5px;
+  cursor: pointer;
 }

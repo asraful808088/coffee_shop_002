@@ -15,6 +15,7 @@ export default function Blog() {
   });
   const [removeImage, setRemoveImage] = useState([]);
   const [oldImage, setOldImage] = useState(null);
+  const [blogItem, setBlogItem] = useState([]);
   useEffect(() => {
     getBlogInfo((res) => {
       setHeroImage({
@@ -77,12 +78,72 @@ export default function Blog() {
         }}
       />
       <div className={style.blogItemsBox}>
-        {[1, 1, 1, 1, 1].map((element, index) => {
+        {blogItem.map((element, index) => {
           return (
             <div className={style.blogItems} key={index}>
-              <FileInput fullWidth />
+              <FileInput
+                id={Date.now() + index}
+                onClear={(id) => {
+                  if (id) {
+                    const newItems = blogItem.map((element2, index2) => {
+                      if (index == index2) {
+                        return {
+                          ...element2,
+                          image: {},
+                        };
+                      }
+                      return element2;
+                    });
+                    setBlogItem(newItems);
+                  } else {
+                    const newItems = blogItem.filter((element2, index2) => {
+                      return index != index2;
+                    });
+                    setBlogItem(newItems);
+                  }
+                }}
+                crossShow
+                fullWidth
+                onFile={(file) => {
+                  const newItems = blogItem.map((element2, index2) => {
+                    if (index == index2) {
+                      return {
+                        ...element2,
+                        image: {
+                          fullFile: file.fullFile,
+                        },
+                      };
+                    }
+                    return element2;
+                  });
+                  setBlogItem(newItems);
+                }}
+                fileUrl={
+                  element.image?.fullFile
+                    ? URL.createObjectURL(element?.image?.fullFile)
+                    : element.image?.webUrl
+                    ? `${element.image.host}${element.image.path}${element.image?.webUrl}`
+                    : null
+                }
+              />
               <div className={style.header}>
-                <TextField className={style.inputText} placeholder="name" />
+                <TextField
+                  className={style.inputText}
+                  placeholder="name"
+                  value={element.name}
+                  onChange={(e) => {
+                    const newItems = blogItem.map((element2, index2) => {
+                      if (index2 == index) {
+                        return {
+                          ...element2,
+                          name: e.target.value,
+                        };
+                      }
+                      return element2;
+                    });
+                    setBlogItem(newItems);
+                  }}
+                />
               </div>
               <div className={style.des}>
                 <TextField
@@ -90,11 +151,51 @@ export default function Blog() {
                   multiline
                   rows={6}
                   placeholder="description"
+                  value={element.description}
+                  onChange={(e) => {
+                    const newItems = blogItem.map((element2, index2) => {
+                      if (index2 == index) {
+                        return {
+                          ...element2,
+                          description: e.target.value,
+                        };
+                      }
+                      return element2;
+                    });
+                    setBlogItem(newItems);
+                  }}
                 />
               </div>
             </div>
           );
         })}
+        <div className={`${style.blogItems} ${style.blank}`}>
+          <div
+            className={style.add}
+            onClick={() => {
+              const numb = Date.now();
+              setBlogItem([
+                ...blogItem,
+                {
+                  image: {},
+                  name: "",
+                  description: "",
+                  like: [],
+                  dislike: [],
+                  comment: [],
+                  date: numb,
+                },
+              ]);
+            }}
+          >
+            +
+          </div>
+        </div>
+      </div>
+      <div className={style.buttonBox}>
+        <div className={style.button} role="button">
+          Save
+        </div>
       </div>
     </div>
   );

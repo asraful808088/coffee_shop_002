@@ -5,7 +5,7 @@ import style from "./style.module.css";
 // eslint-disable-next-line react/prop-types
 function FileInputRef(
   // eslint-disable-next-line react/prop-types
-  { fileUrl, fullWidth = false, onFile, onClear, id, fullheight = false },
+  { fileUrl, fullWidth = false, onFile, onClear, id, fullheight = false, crossShow = false },
   ref
 ) {
   const imageRef = useCreateRef();
@@ -48,6 +48,36 @@ function FileInputRef(
         >
           +
         </div>
+      ) : fileUrl || crossShow ? (
+        <>
+          <div
+            className={style.cross}
+            onClick={() => {
+              if (crossShow) {
+                if (onClear) {
+                  onClear();
+                }
+              } else {
+                if (onClear) {
+                  onClear(id);
+                }
+              }
+            }}
+          >
+            +
+          </div>
+          <label htmlFor={`file-${id ?? Date.now}`}>
+            <div className={style.addImage}>+</div>
+            <input
+              ref={ref ?? imageRef}
+              type="file"
+              name=""
+              id={`file-${id ?? ""}`}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          </label>
+        </>
       ) : (
         <label htmlFor={`file-${id ?? ""}`}>
           <div className={style.addImage}>+</div>

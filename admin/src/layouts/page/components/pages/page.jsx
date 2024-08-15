@@ -3,6 +3,7 @@ import AboutUs from "./about";
 import Blog from "./blog/blog";
 import Contact from "./contact/contact";
 import Home from "./home";
+import Items from "./items";
 import Service from "./service/service";
 import style from "./style.module.css";
 // eslint-disable-next-line react/prop-types
@@ -19,8 +20,9 @@ export default function TabPage({ active }) {
         <Contact />
       ) : tabItem.SERVICE == active ? (
         <Service />
-      ) : null}
-      {/* <AboutUs /> */}
+      ) : (
+        <Items />
+      )}
     </div>
   );
 }

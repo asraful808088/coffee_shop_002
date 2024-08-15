@@ -14,6 +14,12 @@ export default function Contact() {
   });
   const [removeImage, setRemoveImage] = useState([]);
   const [oldImage, setOldImage] = useState(null);
+  const [contectInfo, setContectInfo] = useState({
+    mapLink: "",
+    phoneList: [],
+    mediaList: [],
+    address: "",
+  });
   useEffect(() => {
     getContactInfo((res) => {
       setHeroImage({
@@ -78,37 +84,117 @@ export default function Contact() {
       <div className={style.info}>
         <div className={style.item}>
           <h5 className={style.header}>Map-Link</h5>
-          <TextField />
+          <TextField
+            value={contectInfo.mapLink}
+            onChange={(e) => {
+              setContectInfo({ ...contectInfo, mapLink: e.target.value });
+            }}
+          />
         </div>
         <div className={style.item}>
           <h5 className={style.header}>Information</h5>
+          {console.log(contectInfo)}
           <div className={style}>
             <div>
               <h6>Address</h6>
-              <TextField className={style.inputTextTags} />
+              <TextField
+                className={style.inputTextTags}
+                value={contectInfo.address}
+                onChange={(e) => {
+                  setContectInfo({ ...contectInfo, address: e.target.value });
+                }}
+              />
             </div>
             <div>
               <h6>Phone & Hot-Line</h6>
               <div className={style.inputItems}>
-                <TextField className={style.inputTextTags} />
-                <TextField className={style.inputTextTags} />
-
-                <button className={style.add}>+</button>
+                {contectInfo.phoneList?.map((element, index) => {
+                  return (
+                    <div className={style.phoneinputBox} key={index}>
+                      <TextField
+                        className={style.inputTextTags}
+                        value={element.text}
+                        onChange={(e) => {
+                          const newItems = contectInfo.phoneList?.map((element2, index2) => {
+                            if (index2 == index) {
+                              return {
+                                ...element2,
+                                text: e.target.value,
+                              };
+                            }
+                            return element2;
+                          });
+                          setContectInfo({
+                            ...contectInfo,
+                            phoneList: newItems,
+                          });
+                        }}
+                      />
+                      <span
+                        className={style.cross}
+                        onClick={() => {
+                          const newItems = contectInfo.phoneList?.filter((element2, index2) => {
+                            return index2 != index;
+                          });
+                          setContectInfo({
+                            ...contectInfo,
+                            phoneList: newItems,
+                          });
+                        }}
+                      >
+                        +
+                      </span>
+                    </div>
+                  );
+                })}
+                <button
+                  className={style.add}
+                  onClick={() => {
+                    setContectInfo({
+                      ...contectInfo,
+                      phoneList: [...contectInfo.phoneList, { text: "" }],
+                    });
+                  }}
+                >
+                  +
+                </button>
               </div>
             </div>
             <div>
               <h6>Email & Social Media</h6>
               <div className={style.inputItemss}>
-                <div className={style.keyVal}>
-                  <TextField className={style.inputTextTags} />
-                  <TextField className={style.inputTextTags} />
-                </div>
-                <div>
-                  <TextField className={style.inputTextTags} />
-                  <TextField className={style.inputTextTags} />
-                </div>
+                {contectInfo.mediaList?.map((element, index) => (
+                  <div className={style.keyVal} key={index}>
+                    <TextField className={style.inputTextTags} />
+                    <TextField className={style.inputTextTags} />
+                    <span
+                      className={style.crossbar}
+                      onClick={() => {
+                        const newItems = contectInfo.mediaList?.filter((element2, index2) => {
+                          return index2 != index;
+                        });
+                        setContectInfo({
+                          ...contectInfo,
+                          mediaList: newItems,
+                        });
+                      }}
+                    >
+                      +
+                    </span>
+                  </div>
+                ))}
 
-                <button className={style.add}>+</button>
+                <button
+                  className={style.add}
+                  onClick={() => {
+                    setContectInfo({
+                      ...contectInfo,
+                      mediaList: [...contectInfo.mediaList, { key: "", value: "" }],
+                    });
+                  }}
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>

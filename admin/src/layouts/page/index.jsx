@@ -9,6 +9,7 @@ const tabItem = {
   SERVICE: "SERVICE",
   BLOG: "BLOG",
   CONTACT: "CONTACT",
+  ITEMS: "ITEMS",
 };
 export default function Page(params) {
   const [activetab, setActiveTab] = useState(tabItem.HOME);
