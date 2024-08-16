@@ -49,7 +49,7 @@ export function postCshItems(
   formData.append("removeImage", JSON.stringify(removeImageChfsList));
   const host = !cshf
     ? `${config.SERVER_HOST}/about/OurSpecialChefs`
-    : `${config.SERVER_HOST}/about/cshf`;
+    : `${config.SERVER_HOST}/about/OurResponsivleWaiters`;
   axios
     .post(host, formData)
     .then((res) => {

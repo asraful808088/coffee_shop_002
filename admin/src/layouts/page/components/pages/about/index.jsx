@@ -18,12 +18,18 @@ export default function AboutUs() {
   });
   const [removeImage, setRemoveImage] = useState([]);
   const [oldImage, setOldImage] = useState(null);
-  const [ourWaiters, setOurwaiters] = useState([]);
   const [oldChfsId, setOldChfsId] = useState([]);
   const [ourPopulerChfs, setOurPopulerChfs] = useState([]);
   const [removeImageChfsList, setRemoveImageChfsList] = useState([]);
+
+  const [oldWaitersId, setOldWaitersId] = useState([]);
+  const [ourWaiters, setOurWaiters] = useState([]);
+  const [removeImageWaitersList, setRemoveImageWaitersList] = useState([]);
+
   useEffect(() => {
     getAboutInfo((res) => {
+      setOurWaiters(res?.ORW);
+      setOldWaitersId(res?.ORW);
       setOurPopulerChfs(res?.OSC);
       setOldChfsId(res?.OSC);
       setHeroImage({
@@ -500,18 +506,122 @@ export default function AboutUs() {
 
       <h5>{"Our Responsivle waiter's"}</h5>
       <div className={style.cardBox}>
-        {[1, 1, 1, 1, 1].map((element, index) => {
+        {ourWaiters.map((element, index) => {
           return (
             <div className={style.item} key={index}>
               <div className={style.profile}>
-                <FileInput fullWidth fullheight />
+                <FileInput
+                  id={Date.now() + uuid()}
+                  fullWidth
+                  fullheight
+                  crossShow
+                  fileUrl={
+                    element?.mainImage?.fullFile
+                      ? URL.createObjectURL(element?.mainImage?.fullFile)
+                      : element?.mainImage?.webUrl
+                      ? `${config.HOST_NAME}${element?.mainImage?.path}${element?.mainImage?.webUrl}`
+                      : null
+                  }
+                  onClear={(id) => {
+                    if (id) {
+                      const newItems = ourWaiters.map((element2, index2) => {
+                        if (index2 == index) {
+                          if (element2?.mainImage?.webUrl) {
+                            setRemoveImageWaitersList([
+                              ...removeImageWaitersList,
+                              { ...element2.mainImage },
+                            ]);
+                          }
+                          return {
+                            ...element2,
+                            mainImage: {},
+                            prevId: element2.prevId ? element2.prevId : element2._id,
+                            _id: uuid(),
+                          };
+                        }
+                        return {
+                          ...element2,
+                        };
+                      });
+                      setOurWaiters(newItems);
+                    } else {
+                      const newItems = ourWaiters.filter((element2, index2) => {
+                        return index2 != index;
+                      });
+                      if (element.imageItems[0]) {
+                        setRemoveImageWaitersList([
+                          ...removeImageWaitersList,
+                          { ...element.imageItems[0] },
+                        ]);
+                      }
+                      setOurWaiters(newItems);
+                    }
+                  }}
+                  onFile={(file) => {
+                    console.log(file);
+                    const newItems = ourWaiters.map((element2, index2) => {
+                      if (index2 == index) {
+                        return {
+                          ...element2,
+                          mainImage: { fullFile: file.fullFile },
+                        };
+                      }
+                      return {
+                        ...element2,
+                      };
+                    });
+                    setOurWaiters(newItems);
+                  }}
+                />
               </div>
               <div className={style.des}>
                 <div className={style.input}>
-                  <TextField className={style.textInput} />
+                  <TextField
+                    placeholder="title"
+                    className={style.textInput}
+                    value={element.title}
+                    onChange={(e) => {
+                      const newItems = ourWaiters.map((element2, index2) => {
+                        if (index2 == index) {
+                          return {
+                            ...element2,
+                            title: e.target.value,
+                            prevId: element2.prevId ? element2.prevId : element2._id,
+                            _id: uuid(),
+                          };
+                        }
+                        return {
+                          ...element2,
+                        };
+                      });
+                      setOurWaiters(newItems);
+                    }}
+                  />
                 </div>
                 <div className={style.input}>
-                  <TextField className={style.textInput} multiline rows={7} />
+                  <TextField
+                    placeholder="description"
+                    className={style.textInput}
+                    multiline
+                    rows={7}
+                    value={element.description}
+                    onChange={(e) => {
+                      const newItems = ourWaiters.map((element2, index2) => {
+                        if (index2 == index) {
+                          return {
+                            ...element2,
+                            description: e.target.value,
+                            prevId: element2.prevId ? element2.prevId : element2._id,
+                            _id: uuid(),
+                          };
+                        }
+                        return {
+                          ...element2,
+                        };
+                      });
+                      setOurWaiters(newItems);
+                    }}
+                  />
                 </div>
               </div>
 
@@ -534,7 +644,27 @@ export default function AboutUs() {
                   </div>
                   <div className={style.textInput}>
                     {" "}
-                    <TextField />
+                    <TextField
+                      placeholder="facebook"
+                      value={element.fb}
+                      onChange={(e) => {
+                        const newItems = ourWaiters.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              fb: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+
+                        setOurWaiters(newItems);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -556,7 +686,26 @@ export default function AboutUs() {
                   </div>
                   <div className={style.textInput}>
                     {" "}
-                    <TextField />
+                    <TextField
+                      placeholder="instagram"
+                      value={element.in}
+                      onChange={(e) => {
+                        const newItems = ourWaiters.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              in: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+                        setOurWaiters(newItems);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -578,7 +727,26 @@ export default function AboutUs() {
                   </div>
                   <div className={style.textInput}>
                     {" "}
-                    <TextField />
+                    <TextField
+                      placeholder="Linkedin"
+                      value={element.lin}
+                      onChange={(e) => {
+                        const newItems = ourWaiters.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              lin: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+                        setOurWaiters(newItems);
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -615,16 +783,82 @@ export default function AboutUs() {
                     </svg>
                   </div>
                   <div className={style.textInput}>
-                    <TextField />
+                    <TextField
+                      placeholder="x"
+                      value={element.SX}
+                      onChange={(e) => {
+                        const newItems = ourWaiters.map((element2, index2) => {
+                          if (index2 == index) {
+                            return {
+                              ...element2,
+                              SX: e.target.value,
+                              prevId: element2.prevId ? element2.prevId : element2._id,
+                              _id: uuid(),
+                            };
+                          }
+                          return {
+                            ...element2,
+                          };
+                        });
+                        setOurWaiters(newItems);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           );
         })}
+        <div
+          className={style.addButton}
+          onClick={() => {
+            setOurWaiters([
+              ...ourWaiters,
+              {
+                _id: uuid(),
+                imageItems: [],
+                mainImage: {},
+                title: "",
+                description: "",
+                fb: "",
+                SX: "",
+                in: "",
+                lin: "",
+              },
+            ]);
+          }}
+        >
+          +
+        </div>
       </div>
       <div className={style.buttonBox}>
-        <div className={style.button} role="button">
+        <div
+          className={style.button}
+          role="button"
+          onClick={() => {
+            postCshItems(
+              {
+                oldChfsId: oldWaitersId,
+                ourPopulerChfs: ourWaiters,
+                removeImageChfsList: removeImageWaitersList,
+                cshf: true,
+              },
+              ({ res, newData }) => {
+                if (res?.data) {
+                  const newItems = ourWaiters.filter((elementx, indexx) => {
+                    const find = newData.find((x, y) => x._id == elementx._id);
+                    if (find) {
+                      return false;
+                    }
+                    return true;
+                  });
+
+                  setOurWaiters([...newItems, ...res?.data?.data]);
+                }
+              }
+            );
+          }}
+        >
           Save
         </div>
       </div>
