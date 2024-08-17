@@ -1,11 +1,13 @@
 import FileUploader from "@/lib/fileUploadhandler/fileUploadhandler";
 import getContactHero from "@/lib/mongo/operation/get/contactHero";
+import getContactInfo from "@/lib/mongo/operation/get/getContact";
 import insertContactHero from "@/lib/mongo/operation/insert/contactHero";
 import ContactHero from "@/lib/mongo/Schema/contactHero/contactHero";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, res) {
   const reuslt = await getContactHero();
-  return NextResponse.json({ success: true, data: reuslt[0] });
+  const info = await getContactInfo();
+  return NextResponse.json({ success: true, data: reuslt[0], info });
 }
 
 export async function POST(req: NextRequest, res) {
@@ -16,7 +18,6 @@ export async function POST(req: NextRequest, res) {
     backStap: "../../../../../../",
   });
   if (fileUploadResult.title && fileUploadResult.description) {
-    
     try {
       await ContactHero.deleteMany();
     } catch (error) {}
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest, res) {
         description: fileUploadResult.description,
       };
       const r = await insertContactHero(data);
-      console.log(r)
+      console.log(r);
     } catch (error) {}
 
     return NextResponse.json(

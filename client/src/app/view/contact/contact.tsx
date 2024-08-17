@@ -46,7 +46,7 @@ export default function Contact() {
         <div className="w-full h-[600px] bg-slate-100 mt-16 relative">
           <iframe
             className="w-full h-full relative"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d228.44027225791905!2d90.50320106104017!3d23.63858248553691!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b10812a520a3%3A0x6d3af4457bec4c90!2sNarayanganj!5e0!3m2!1sen!2sbd!4v1718723243695!5m2!1sen!2sbd"
+            src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d1124.3176752270297!2d90.50758326962865!3d23.6428615772081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e6!4m3!3m2!1d23.6428202!2d90.5082097!4m3!3m2!1d23.6428182!2d90.5082058!5e1!3m2!1sen!2sbd!4v1723789660642!5m2!1sen!2sbd"
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"

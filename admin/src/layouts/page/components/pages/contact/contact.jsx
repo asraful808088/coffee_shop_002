@@ -1,6 +1,7 @@
 import { TextField } from "@mui/material";
 import { getContactInfo, postHeroContext } from "network/contact/contact";
 import { useEffect, useState } from "react";
+import { postContactInfo } from "../../../../../network/contact/info";
 import SimpleHeroImage from "../components/simpleHeroImage/simpleHeroImage";
 import style from "./style.module.css";
 export default function Contact() {
@@ -22,6 +23,9 @@ export default function Contact() {
   });
   useEffect(() => {
     getContactInfo((res) => {
+      if (res.info[0]) {
+        setContectInfo(res.info[0]);
+      }
       setHeroImage({
         ...heroImage,
         title: res?.data?.title,
@@ -93,7 +97,7 @@ export default function Contact() {
         </div>
         <div className={style.item}>
           <h5 className={style.header}>Information</h5>
-          {console.log(contectInfo)}
+
           <div className={style}>
             <div>
               <h6>Address</h6>
@@ -165,8 +169,44 @@ export default function Contact() {
               <div className={style.inputItemss}>
                 {contectInfo.mediaList?.map((element, index) => (
                   <div className={style.keyVal} key={index}>
-                    <TextField className={style.inputTextTags} />
-                    <TextField className={style.inputTextTags} />
+                    <TextField
+                      className={style.inputTextTags}
+                      value={element.key}
+                      onChange={(e) => {
+                        const newItems = contectInfo?.mediaList?.map((element2, index2) => {
+                          if (index == index2) {
+                            return {
+                              ...element2,
+                              key: e.target.value,
+                            };
+                          }
+                          return element2;
+                        });
+                        setContectInfo({
+                          ...contectInfo,
+                          mediaList: newItems,
+                        });
+                      }}
+                    />
+                    <TextField
+                      className={style.inputTextTags}
+                      value={element.value}
+                      onChange={(e) => {
+                        const newItems = contectInfo?.mediaList?.map((element2, index2) => {
+                          if (index == index2) {
+                            return {
+                              ...element2,
+                              value: e.target.value,
+                            };
+                          }
+                          return element2;
+                        });
+                        setContectInfo({
+                          ...contectInfo,
+                          mediaList: newItems,
+                        });
+                      }}
+                    />
                     <span
                       className={style.crossbar}
                       onClick={() => {
@@ -200,7 +240,19 @@ export default function Contact() {
           </div>
         </div>
         <div className={style.buttonBox}>
-          <div className={style.button}>Save</div>
+          <div
+            className={style.button}
+            role="button"
+            onClick={() => {
+              postContactInfo(contectInfo, (result) => {
+                if (result.data) {
+                  setContectInfo(result?.data?.data);
+                }
+              });
+            }}
+          >
+            Save
+          </div>
         </div>
       </div>
     </div>
