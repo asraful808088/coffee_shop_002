@@ -1,14 +1,13 @@
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import Icon from "@mui/material/Icon";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-import Icon from "@mui/material/Icon";
+import Dashboard from "layouts/dashboard";
+import Notifications from "layouts/notifications";
 import Page from "layouts/page/index";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import Profile from "layouts/profile";
+import Tables from "layouts/tables";
+import ProdectTraning from "layouts/traning/traning";
 const routes = [
   {
     type: "collapse",
@@ -36,11 +35,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Billing",
-    key: "billing",
+    name: "P.Traning",
+    key: "traning",
     icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
+    route: "/traning",
+    component: <ProdectTraning />,
   },
 
   {
