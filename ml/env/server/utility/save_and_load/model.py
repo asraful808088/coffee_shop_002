@@ -14,6 +14,10 @@ def save_model(vectorizer, tfidf_matrix, filename='model.joblib',dirname="simila
 
 def load_model(filename='model.joblib',dirname="similar"):
     load_directory = get_parent_directory(levels_up=0)
-    file_path = os.path.join(load_directory,"models",dirname, filename)
-    vectorizer, tfidf_matrix = joblib.load(file_path)
-    return vectorizer, tfidf_matrix
+    try:
+        file_path = os.path.join(load_directory,"models",dirname, filename)
+        vectorizer, tfidf_matrix = joblib.load(file_path)
+        return vectorizer, tfidf_matrix
+    except:
+        return None
+    

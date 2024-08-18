@@ -5,6 +5,7 @@ import getPopulerBranch from "@/lib/mongo/operation/get/populerBranch";
 import insertContent from "@/lib/mongo/operation/insert/insert";
 import HomeHero from "@/lib/mongo/Schema/homeHero/homeHero";
 import { NextRequest, NextResponse } from "next/server";
+import { redisDB } from "@/lib/radius/config";
 const POST = async (req: NextRequest, res) => {
   const formData = await req.formData();
   const fileUploadresult = await FileUploader({
@@ -46,6 +47,10 @@ const POST = async (req: NextRequest, res) => {
 };
 
 const GET = async (req: NextRequest, res) => {
+  console.log(redisDB.isOpen)
+  if (!redisDB.isOpen) {
+    redisDB.connect()
+  }
   const hero_context = await getHomeHero();
   const populerBranchData = await getPopulerBranch();
   const getNewCoffeeItemdata = await getNewCoffeeItem();

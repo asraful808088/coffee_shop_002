@@ -72,13 +72,14 @@ def get_top_n_similar(sentences, query, vectorizer, top_n=10):
     
     # Compute the cosine similarity matrix
     similarity_matrix = cosine_similarity(tfidf_matrix)
-    
+    for i in similarity_matrix:
+        print(i)
     # The index of the query sentence is the last one
     query_index = len(sentences)
     
     # Get the similarity scores for the query sentence
     similarity_scores = similarity_matrix[query_index][:-1]  # exclude the last one (itself)
-    print(similarity_scores)
+    # print(similarity_scores)
     # Get indices of the top_n most similar sentences
     top_indices = np.argsort(-similarity_scores)[:top_n]
     

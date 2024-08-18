@@ -11,6 +11,7 @@ export async function POST(req: NextRequest, res) {
     prodects: JSON.parse(formData.get("prodects"))["prodects"],
   });
   if (result?.data?.success) {
+    console.log(result?.data["value"])
     return NextResponse.json({ success: true });
   } else {
     return NextResponse.json({ success: false });

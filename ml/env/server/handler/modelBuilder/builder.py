@@ -1,23 +1,28 @@
-import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.model_selection import train_test_split
-import pandas as pd
-import numpy as np
-from server.utility.save_and_load.model import save_model
-def prodectModel(data):
-    items_data = {
-        'id': [],
-        'description': []
-    }
-    for item in data:
-        items_data['id'].append(item.id)
-        items_data['description'].append(f'''{item.header} {item.aiDescription} {item.aiDescription}''')
-    df = pd.DataFrame(items_data)
-    vectorizer = TfidfVectorizer()
-    tfidf_matrix = vectorizer.fit_transform(items_data['description'])
-    save_model(vectorizer, tfidf_matrix)
-    return True
+def prodectModel(data)-> bool | dict | None:
+    try:
+        build_data = {}
+        items_data = {
+            'id': [],
+            'description': []
+        }
+        for item in data:
+            items_data['id'].append(item.id)
+            items_data['description'].append(f'''{item.header} {item.aiDescription} {item.aiDescription}''')
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(items_data['description'])
+        build_mtx = cosine_similarity(tfidf_matrix)
+        for i in range(len(build_mtx)):
+            singleMtx = build_mtx[i]
+            build_data[items_data["id"][i]] = []
+            for j in range(len(singleMtx)):
+                build_data[items_data["id"][i]].append({"id":items_data["id"][j],"rate":singleMtx[j] })
+
+        return build_data
+    except:
+        return False
+    
 
 
 
