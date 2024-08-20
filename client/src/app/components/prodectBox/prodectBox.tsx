@@ -1,67 +1,63 @@
+import getItems from "@/app/network/getItems/getItems";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { fonts } from "../fonts/font";
 import Footer from "../footer/footer";
 import ProdectCard from "../prodectCard/card";
 import StartBar from "../starbar/starbar";
 import DoubleHandleSlider from "../twoWayRengeBar/rengebar";
 import "./style.css";
-const items = [
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-];
-
-const PaginatedItems = ({ itemsPerPage }) => {
+const PaginatedItems = ({
+  itemsPerPage,
+  maxPagination = 0,
+  onPage,
+  prodectItems,
+}) => {
   const [page, setPage] = useState(1);
-
+  const router = useRouter();
   const handleChange = (event, value) => {
     setPage(value);
+    if (onPage) {
+      onPage(value);
+    }
   };
-
-  const startOffset = (page - 1) * itemsPerPage;
-  const currentItems = items.slice(startOffset, startOffset + itemsPerPage);
-
   return (
-    <Box>
-      <div className="w-full h-full flex flex-wrap justify-center">
-        {currentItems.map((item, index) => (
-          <ProdectCard key={index} />
-        ))}
+    <>
+      <div className="w-full h-full grid  grid-cols-prodect001-auto-fit gap-5">
+        {prodectItems.map((item, index) => {
+          return (
+            <div key={index} className=" ">
+              <ProdectCard
+                marginOff
+                widthFull
+                onDisplay={(value) => {
+                  router.push(`/review/${value?.prodectId}`, { scroll: true });
+                }}
+                id={item._id}
+                header={item.header}
+                des={item.description}
+                image={`${item.mainImage.host}${item.mainImage.path}${item.mainImage.webUrl}`}
+              />
+            </div>
+          );
+        })}
       </div>
       <div className="w-full flex justify-center text-white">
         <Pagination
-          count={100}
+          count={maxPagination}
           page={page}
           onChange={handleChange}
           color="standard"
           className="pagination"
         />
       </div>
-    </Box>
+    </>
   );
 };
 
@@ -130,15 +126,39 @@ const OptionSelector = () => {
             value={40}
             className={`${fonts.font_11.className} text-xs`}
           >
-             rate (high - low)
+            rate (high - low)
           </MenuItem>
         </Select>
       </FormControl>
     </Box>
   );
 };
+export enum PRODECT_TYPE {
+  COFFEE,
+  TEA,
+}
+interface ProductBoxProps {
+  prodectType: PRODECT_TYPE;
+}
+export default function ProductBox(props: ProductBoxProps) {
+  const [prodect, setProdect] = useState([]);
+  const [totalpagination, setTotalpagination] = useState(1);
+  function getProdectitemns(page) {
+    getItems({
+      prodectType: PRODECT_TYPE.TEA,
+      pagination: page,
+      callback: (value) => {
+        if (value.data) {
+          setTotalpagination(value.data?.totalPagination);
+          setProdect(value.data?.items);
+        }
+      },
+    });
+  }
+  useEffect(() => {
+    getProdectitemns();
+  }, []);
 
-export default function ProductBox() {
   return (
     <div className="w-[1600px] m-auto relative h-auto mt-20 ">
       <div
@@ -171,18 +191,25 @@ export default function ProductBox() {
               Pagination: 5 - Product (20 to 25) out of 50
             </div>
             <div className="w-1/2 h-full relative flex justify-end">
-            <div className="flex items-center">
-              <div className={`text-white ${fonts.font_11.className}`}>Sort-by :</div>
-            <div className="ml-1" >
-            <OptionSelector />
-            </div>
-            </div>
-            
+              <div className="flex items-center">
+                <div className={`text-white ${fonts.font_11.className}`}>
+                  Sort-by :
+                </div>
+                <div className="ml-1">
+                  <OptionSelector />
+                </div>
+              </div>
             </div>
           </div>
           <div className="w-full flex flex-wrap justify-center pt-20  ">
-          <PaginatedItems itemsPerPage={5} />
-           
+            <PaginatedItems
+              itemsPerPage={5}
+              maxPagination={totalpagination}
+              prodectItems={prodect}
+              onPage={(val) => {
+                getProdectitemns(val);
+              }}
+            />
           </div>
         </div>
       </div>

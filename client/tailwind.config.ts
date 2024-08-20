@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        "prodect001-auto-fit": "repeat(auto-fit, minmax(320px, 1fr))",
+      },
+      gridAutoRows: {
+        auto: "auto",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

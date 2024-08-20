@@ -78,23 +78,23 @@ export default function HomeDisplay(props: HomeDisplay): React.FC {
     return;
   }
   return (
-    <div className="w-full h-[1000px] grid grid-cols-8 grid-rows-8 ">
-      <div className="h-[1000px] w-full bg-black bg-opacity-40 absolute z-20 flex flex-col top-0 left overflow-hidden">
+    <div className="w-full  h-[480px]  md:h-[600px] xl:h-[1000px] grid grid-cols-8 grid-rows-8 ">
+      <div className=" h-[480px] md:h-[600px] xl:h-[1000px] w-full bg-black bg-opacity-40 absolute z-20 flex flex-col top-0 left overflow-hidden">
       <Navheader />
-        <div className="flex-grow w-full h-[94%] flex justify-center items-center relative bg-black bg-opacity-50">
-          <div className="w-[1200px] h-full  flex flex-col items-center p-[50px] justify-center">
+        <div className="flex-grow w-full  md:h-[94%] flex justify-center items-center relative bg-black bg-opacity-50">
+          <div className="max-w-[1200px] w-full h-full  flex flex-col items-center p-[15px] sm:p-[30px] md:p-[50px] justify-center">
             <p
-              className={` text-white text-center text-5xl ${fonts.font_3.className}`}
+              className={` text-white text-center text-base md:text-3xl xl:text-5xl ${fonts.font_3.className}`}
             >
               Lorem ipsum dolor sit amet consectetur alibero recusandae?
             </p>
             <p
-              className={` text-white text-center text-6xl mt-5 mb-10 ${fonts.font_10.className}`}
+              className={` text-white text-center text-base md:text-4xl xl:text-6xl mt-1 sm:mt-5 mb-3 sm:mb-5 md:mb-10 ${fonts.font_10.className}`}
             >
               Lorem ipsum dolor sit amet consectetur alibero recusandae?
             </p>
             <p
-              className={` text-white text-center text-xl ${fonts.font_11.className}`}
+              className={` text-white text-center text-xs md:text-base  xl:text-xl  ${fonts.font_11.className}`}
             >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
               eligendi. Velit necessitatibus eligendi molestias praesentium

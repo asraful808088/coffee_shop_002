@@ -9,13 +9,18 @@ import { usePathname } from "next/navigation";
 import { fonts } from "../fonts/font";
 interface NavheaderProps {
   bgTransparent: boolean;
+  hidddenLink: boolean;
 }
 export default function Navheader(props: NavheaderProps) {
   const p = usePathname();
 
   return (
     <div className="w-full">
-      <div className={` h-28  w-full left-0 top-0 absolute  ${props.bgTransparent?'':"bg-black"} bg-opacity-50`}></div>
+      <div
+        className={` h-28  w-full left-0 top-0 absolute  ${
+          props.bgTransparent ? "" : "bg-black"
+        } bg-opacity-50`}
+      ></div>
       <div className={`w-full   h-28 px-20 flex bg-transparent z-20 relative`}>
         <div className="w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%]   flex p-2">
           <div className=" h-16 w-16 ">
@@ -23,7 +28,16 @@ export default function Navheader(props: NavheaderProps) {
           </div>
         </div>
         <div
-          className={`w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%] h-full flex justify-center items-center coffee-font ${fonts.font_1.className} `}
+          className={`${
+            props.hidddenLink ? "flex" : "hidden"
+          } w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%]`}
+        ></div>
+        <div
+          className={`w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%] h-full  ${
+            !props.hidddenLink ? "lg:flex hidden" : "hidden"
+          }  justify-center items-center coffee-font ${
+            fonts.font_1.className
+          } `}
         >
           <Link
             href="/"
@@ -57,14 +71,18 @@ export default function Navheader(props: NavheaderProps) {
             <div className="absolute hidden group-hover:flex -bottom-10 bg-white  w-40 h-20 flex-col justify-center items-center">
               <Link
                 href="/items/tea"
-                className={`text-black w-full py-2 text-center uppercase ${p == "/items/tea" ? "text-orange-400" : ""}`}
+                className={`text-black w-full py-2 text-center uppercase ${
+                  p == "/items/tea" ? "text-orange-400" : ""
+                }`}
               >
                 tea
               </Link>
               <hr className="w-full" />
               <Link
                 href="/items/coffee"
-                className={`text-black w-full py-2 text-center uppercase ${p == "/items/coffee" ? "text-orange-400" : ""}`}
+                className={`text-black w-full py-2 text-center uppercase ${
+                  p == "/items/coffee" ? "text-orange-400" : ""
+                }`}
               >
                 coffee
               </Link>

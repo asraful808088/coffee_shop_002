@@ -7,7 +7,6 @@ import json
 async def read_item(prodect_data:ProdectItems):
     data =  prodect_items_extractor(prodect_data,name="prodects")
     result = prodectModel(data)
-    print(result)
     if result is not False:
         return {"success": True,"matx":json.dumps(result)}
     else:

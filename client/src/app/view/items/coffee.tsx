@@ -102,7 +102,7 @@ export default function Coffee() {
             >
               Our Populer Items
             </div>
-            <div className="h-auto w-full   flex justify-center items-center">
+            <div className="h-auto w-full    flex justify-center items-center">
               <div className="w-[1200px] h-[400px]  relative">
                 <Slider />
               </div>

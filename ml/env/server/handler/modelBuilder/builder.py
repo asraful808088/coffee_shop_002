@@ -18,7 +18,7 @@ def prodectModel(data)-> bool | dict | None:
             build_data[items_data["id"][i]] = []
             for j in range(len(singleMtx)):
                 build_data[items_data["id"][i]].append({"id":items_data["id"][j],"rate":singleMtx[j] })
-
+        print(build_data)
         return build_data
     except:
         return False
