@@ -3,14 +3,14 @@ import Image from "next/image";
 import { fonts } from "../fonts/font";
 export default function Footer() {
   return (
-    <div className="w-full relative mt-20 bg-black">
+    <div className="w-full relative mt-20 bg-black overflow-hidden">
       <div className="absolute h-full w-full opacity-10">
         <Image src={bg} alt="" objectFit="cover" layout="fill" />
       </div>
 
-      <div className="w-[1600px] m-auto h-auto  bg-opacity-10 flex justify-between">
-        <div className="w-[450px] h-full flex justify-center p-2">
-          <div className="flex items-center flex-col">
+      <div className="max-w-[1600px] w-full m-auto h-auto  bg-opacity-10 flex justify-between   min-[1100px]:flex-row min-[1100px]:items-start flex-col  ">
+        <div className=" min-[1100px]:w-[450px] h-full flex justify-center p-2">
+          <div className="flex items-center flex-col w-[700px]  min-[1100px]:w-full">
             <div className="relative w-[100px] ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,8 +44,8 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="w-[450px] h-full  py-4 ">
-          <div className="h-[144.27px] w-full"></div>
+        <div className="w-full min-[1100px]:w-[450px]  h-full  py-4">
+        <div className="hidden  1100px:flex h-[144.27px] w-full"></div>
           <div
             className={`text-center text-3xl capitalize ${fonts.font_7.className} text-white`}
           >
@@ -74,8 +74,8 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="w-[450px] h-full py-4  text-white">
-          <div className="h-[144.27px] w-full"></div>
+        <div className="w-full min-[1100px]:w-[450px]  h-full py-4  text-white flex flex-col ">
+          <div className="hidden  1100px:flex h-[144.27px] w-full"></div>
           <div
             className={`text-center text-3xl capitalize ${fonts.font_7.className} `}
           >

@@ -15,7 +15,6 @@ interface ProdectReviewProps {
   prodectItems: Array;
 }
 export default function ProdectReview(props: ProdectReviewProps) {
-  console.log(props.prodectDetails);
   const navigate = useRouter();
   const [imageList, setImageList] = useState([]);
   const [activeImage, setActiveImage] = useState({});
@@ -30,9 +29,9 @@ export default function ProdectReview(props: ProdectReviewProps) {
   }, [props.prodectDetails]);
   return (
     <div className="w-full relative">
-      <Navheader hidddenLink />
+      <Navheader hidddenLink/>
       <div className="w-full h-full flex justify-center items-center ">
-        <div className="w-full h-[900px]  relative overflow-hidden ">
+        <div className="w-full h-auto  relative overflow-hidden ">
           <Image
             src={Bg}
             layout="fill"
@@ -40,9 +39,9 @@ export default function ProdectReview(props: ProdectReviewProps) {
             alt="cover"
             className="absolute h-full w-full opacity-30"
           />
-          <div className="relative w-[1600px] mt-20 flex justify-center  m-auto ">
-            <div className=" w-1/2 h-full relative flex justify-center items-center flex-col ">
-              <div className="h-[600px] w-[600px]  relative">
+          <div className="relative max-w-[1600px] w-full mt-20 flex justify-center items-center lg:items-start m-auto flex-col lg:flex-row">
+            <div className="w-full md:w-[700px] lg:w-1/2 h-full relative flex justify-center items-center flex-col p-3 xl:p-0 flex-grow ">
+              <div className=" aspect-square xl:w-[600px] w-full  relative p-4 xl:p-0">
                 <Image
                   src={
                     activeImage.webUrl
@@ -55,12 +54,12 @@ export default function ProdectReview(props: ProdectReviewProps) {
                   className=" h-full w-full "
                 />
               </div>
-              <div className="h-40 w-full relative py-2 flex justify-center">
+              <div className="h-auto w-full relative py-2 flex justify-center flex-wrap">
                 {imageList.map((element, index) => {
                   return (
                     <div
                       key={index}
-                      className={`h-20 w-20 bg-slate-400 rounded-sm mx-2 cursor-pointer relative ${
+                      className={`h-20 w-20 bg-slate-400 rounded-sm mx-2 cursor-pointer relative mt-1${
                         `${element?.host}${element?.path}${element?.webUrl}` == `${activeImage?.host}${activeImage?.path}${activeImage?.webUrl}` ? "border-2" : ""
                       }`}
                       onClick={()=>{
@@ -84,14 +83,16 @@ export default function ProdectReview(props: ProdectReviewProps) {
                 })}
               </div>
             </div>
-            <div className="h-full relative w-1/2 ">
-              <div className={`${fonts.font_3.className} text-5xl text-white`}>
+            <div className="h-full relative lg:w-1/2 p-3 lg:p-0">
+              <div className={`${fonts.font_3.className} text-3xl lg:text-5xl text-white`}>
                 {props.prodectDetails?.header}
               </div>
               <div
-                className={`${fonts.font_11.className} text-white w-[80%] mt-5 `}
+                className={`${fonts.font_11.className} text-white text-xs sm:text-sm xl:text-base w-full xl:w-[95%] 2xl:w-[80%] mt-5 `}
               >
-                {props.prodectDetails?.description}
+                {/* {props.prodectDetails?.description} */}
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero eius minus nesciunt minima. At cum porro eius, beatae explicabo esse nobis voluptatum! Facere reprehenderit, iure qui error sunt tempora nobis.minima. At cum porro eius, beatae explicabo esse nobis voluptatum! Facere reprehenderit,eius, beatae explicabo esse nobis voluptatum!beatae explicabo esse nobis voluptatum!beatae explicabo esse nobis voluptatum!beatae explicabo esse nobis voluptatum! Facere reprehenderit, iure qui error sunt tempora nobis.
+                Quas modi earum, provident tempore, quasi ipsam voluptas labore consequatur debitis ullam asperiores, unde impedit commodi dolores voluptatibus dolorum reiciendis iure quisquam porro cum. Error sint possimus quos facere eligendi.
               </div>
               <br />
               <div className="w-[80%]">
@@ -177,16 +178,18 @@ export default function ProdectReview(props: ProdectReviewProps) {
           </div>
         </div>
       </div>
-      <div className="w-[1600px] relative m-auto mt-20">
+      <div className="max-w-[1600px] w-full relative m-auto mt-20">
         <div
-          className={`text-center capitalize text-7xl ${fonts.font_7.className} text-white`}
+          className={`text-center capitalize text-4xl lg:text-7xl ${fonts.font_7.className} text-white mb-5`}
         >
           suggesting Prodect
         </div>
-        <div className="w-full relative py-2 flex justify-center flex-wrap">
+        <div className="w-full relative p-2 px-4 grid  grid-cols-prodect001-auto-fit gap-5 ">
           {props?.prodectItems?.map((element, index) => {
             return (
               <ProdectCard
+              marginOff
+              widthFull
                 id={element._id}
                 onDisplay={(e) => {
                   navigate.push(`/review/${e.prodectId}`, { scroll: true });

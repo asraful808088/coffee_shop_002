@@ -1,3 +1,4 @@
+"use client";
 import DisplayImage from "@/app/assets/demo/New folder/full-shot-people-sitting-together-table.jpg";
 import AddressIcon from "@/app/assets/icon/address-svgrepo-com.svg";
 import EmailIcon from "@/app/assets/icon/email-open-svgrepo-com.svg";
@@ -5,19 +6,28 @@ import PhoneIcon from "@/app/assets/icon/phone-call-svgrepo-com.svg";
 import { fonts } from "@/app/components/fonts/font";
 import Footer from "@/app/components/footer/footer";
 import Navheader from "@/app/components/nav-header/navHeader";
+import NavMenu from "@/app/components/navMenu/navMenu";
 import Image from "next/image";
+import { useState } from "react";
 export default function Contact() {
+  const [activeNav, setActiveNav] = useState(false);
+
   return (
     <div className="w-full">
-      <div className="w-full relative h-[750px] bg-slate-400">
+      <div className="z-[999999999999999] relative">
+        <NavMenu activeNav={activeNav} onClose={() => setActiveNav(false)} />
+      </div>
+      <div className="w-full relative h-[400px] md:h-[550px] lg:h-[650px] xl:h-[750px] bg-slate-400">
         <div className="w-full h-full absolute flex flex-col">
           <div className=" w-full h-28 z-10 relative "></div>
           <div className="bg-black bg-opacity-50 w-full flex-grow z-10 relative flex justify-center items-center flex-col">
-            <div className={`${fonts.font_7.className} text-white text-7xl`}>
+            <div
+              className={`${fonts.font_7.className} text-white text-4xl lg:text-7xl`}
+            >
               Contact Us
             </div>
             <div
-              className={`w-[900px] text-center text-white ${fonts.font_11.className} text-2xl mt-2 mb-4`}
+              className={`max-w-[650px] w-full lg:max-w-[900px]  text-center text-white ${fonts.font_11.className}  text-sm md:text-lg lg:text-2xl mt-2 mb-4`}
             >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
               consequuntur cum, eos sequi minus voluptatibus quis iusto corrupti
@@ -34,16 +44,20 @@ export default function Contact() {
           />
         </div>
         <div className="z-50">
-          <Navheader />
+          <Navheader
+            onMenuClick={() => {
+              setActiveNav(!activeNav);
+            }}
+          />
         </div>
       </div>
-      <div className="w-[1600px]   m-auto relative mt-28">
+      <div className="max-w-[1600px] w-full p-1   m-auto relative mt-28">
         <div
-          className={`relative capitalize text-7xl  ${fonts.font_7.className} text-center text-white`}
+          className={`relative capitalize text-3xl md:text-4xl lg:text-7xl  ${fonts.font_7.className} text-center text-white`}
         >
           address & location
         </div>
-        <div className="w-full h-[600px] bg-slate-100 mt-16 relative">
+        <div className="w-full aspect-video bg-slate-100 mt-16 relative">
           <iframe
             className="w-full h-full relative"
             src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d1124.3176752270297!2d90.50758326962865!3d23.6428615772081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e6!4m3!3m2!1d23.6428202!2d90.5082097!4m3!3m2!1d23.6428182!2d90.5082058!5e1!3m2!1sen!2sbd!4v1723789660642!5m2!1sen!2sbd"
@@ -52,34 +66,36 @@ export default function Contact() {
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
-        <div className="w-full  mt-20 flex justify-center  ">
-          <div className="w-[50%]">
+        <div className="w-full  mt-10 md:mt-20 flex justify-center flex-col xl:flex-row ">
+          <div className=" w-[98%] xl:w-[50%]">
             <div
-              className={`text-5xl  capitalize pl-20 text-white  ${fonts.font_7.className}`}
+              className={`text-2xl md:text-5xl capitalize pl-16 md:pl-20 text-white  ${fonts.font_7.className}`}
             >
               Information
             </div>
-            <div className="w-full   mb-20 mt-10 p-10 px-5 text-white flex flex-wrap ">
-              <div className="w-fit h-[200px]  my-4 flex px-2 scale-[0.9]">
+            <div className="w-full   mb-5 md:mb-20 md:mt-10 p-10 px-5 text-white flex flex-wrap lg:flex-nowrap xl:flex-wrap ">
+              <div className="w-full md:w-fit h-[200px]   md:my-4 flex px-2 scale-[0.9]">
                 <div className="h-[150px] w-[150px] flex justify-center items-center">
                   <div className="h-[150px] w-[150px]  ">
                     <AddressIcon />
                   </div>
                 </div>
-                <div className="w-full relative py-5 ml-2">
+                <div className="w-full relative py-5 mx-auto md:ml-2 ">
                   <div
-                    className={`w-full font-extrabold text-2xl  ${fonts.font_7.className}`}
+                    className={`w-full font-extrabold text-xl xl:text-2xl  ${fonts.font_7.className}`}
                   >
                     Address
                   </div>
-                  <div className={`  w-[200px] ${fonts.font_11.className}`}>
+                  <div
+                    className={` text-sm xl:text-base w-[200px] ${fonts.font_11.className}`}
+                  >
                     Head Office: 28 Kazi Nazrul Islam Ave,Navana Zohura Square,
                     Dhaka 1000
                   </div>
                 </div>
               </div>
 
-              <div className="w-fit  h-[200px]  my-4 flex px-2 scale-[0.9]">
+              <div className="w-full md:w-fit  h-[200px]  md:my-4 flex px-2 scale-[0.9]">
                 <div className="h-[150px] w-[150px] flex justify-center items-center">
                   <div className="h-[150px] w-[150px]  p-10">
                     <PhoneIcon />
@@ -87,11 +103,13 @@ export default function Contact() {
                 </div>
                 <div className="w-full relative py-5 ml-2">
                   <div
-                    className={`w-full font-extrabold text-2xl  ${fonts.font_7.className}`}
+                    className={`w-full font-extrabold text-xl xl:text-2xl whitespace-nowrap ${fonts.font_7.className}`}
                   >
                     Phone & Hot-Line
                   </div>
-                  <div className={`w-[40%] ${fonts.font_11.className}`}>
+                  <div
+                    className={`w-[40%] text-sm xl:text-base ${fonts.font_11.className}`}
+                  >
                     <div className={` ${fonts.font_11.className} my-2`}>
                       +8801827334764
                     </div>
@@ -105,7 +123,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="w-fit  h-[200px]  my-4 flex px-2 scale-[0.9]">
+              <div className="w-full md:w-fit  h-[200px]  md:my-4 flex px-2 scale-[0.9]">
                 <div className="h-[150px] w-[150px] flex justify-center items-center">
                   <div className="h-[150px] w-[150px]  p-5">
                     <EmailIcon />
@@ -113,21 +131,29 @@ export default function Contact() {
                 </div>
                 <div className="w-full relative py-5 ml-2">
                   <div
-                    className={`w-full font-extrabold text-2xl  ${fonts.font_7.className}`}
+                    className={`w-full font-extrabold text-sm xl:text-base  ${fonts.font_7.className}`}
                   >
                     Email & Social Media
                   </div>
                   <div className={`w-[40%] ${fonts.font_11.className}`}>
-                    <div className={` ${fonts.font_11.className} my-2`}>
+                    <div
+                      className={` ${fonts.font_11.className} text-sm xl:text-base my-2`}
+                    >
                       info@gmail.com
                     </div>
-                    <div className={` ${fonts.font_11.className} my-2`}>
+                    <div
+                      className={` ${fonts.font_11.className} text-sm xl:text-base my-2`}
+                    >
                       info@hotmail.com
                     </div>
-                    <div className={`${fonts.font_11.className} my-2`}>
+                    <div
+                      className={`${fonts.font_11.className} text-sm xl:text-base my-2`}
+                    >
                       facebook.com/coffees
                     </div>
-                    <div className={` ${fonts.font_11.className} my-2`}>
+                    <div
+                      className={` ${fonts.font_11.className} text-sm xl:text-base my-2`}
+                    >
                       instagram.com/coffees
                     </div>
                   </div>
@@ -135,13 +161,13 @@ export default function Contact() {
               </div>
             </div>
           </div>
-          <div className="w-[50%]">
+          <div className="xl:w-[50%]">
             <div
-              className={`text-5xl capitalize pl-8 text-white ${fonts.font_7.className}`}
+              className={`text-2xl md:text-5xl capitalize md:pl-8 text-white ${fonts.font_7.className}`}
             >
               Your Objection
             </div>
-            <div className="w-full   mb-20 mt-10 p-10">
+            <div className="w-full   mb-20 mt-4 md:mt-10 p-1 md:p-10">
               <div className={`w-full my-4 flex ${fonts.font_7.className} `}>
                 <div className="w-[50%] h-[40px]  mr-1 bg-white">
                   <input
@@ -171,7 +197,7 @@ export default function Contact() {
                   id=""
                 />
               </div>
-              <div className="w-full my-4 h-[500px] bg-white ">
+              <div className="w-full my-4 h-[400px] md:h-[500px] bg-white ">
                 <textarea
                   name=""
                   id=""

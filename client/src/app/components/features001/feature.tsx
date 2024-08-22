@@ -17,11 +17,28 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { fonts } from "../fonts/font";
 import "./style.css";
+import { useEffect, useState } from "react";
 SwiperCore.use([Autoplay, Pagination, Navigation]);
+
 const Feature = () => {
+  const [displayCount,setDisplayCount] = useState(3) 
+  function setSide(){
+    if (window.innerWidth>1024) {
+      setDisplayCount(3)
+    } else {
+      setDisplayCount(1)
+      
+    }
+  }
+  useEffect(()=>{
+      window.addEventListener("resize",()=>{
+        setSide()
+      })
+      setSide()
+  },[])
   return (
-    <div className="w-[1600px] m-auto h-[950px] overflow-hidden ">
-      <div className="absolute w-full  left-0  h-full  bg-white">
+    <div className="w-full  mx-auto h-auto  px-1 relative py-5 overflow-hidden">
+      <div className="absolute  w-screen left-0  h-full  bg-white">
         <Image
           src={bg}
           alt=""
@@ -31,14 +48,14 @@ const Feature = () => {
         />
       </div>
       <div
-        className={`capitalize text-7xl text-center text-black z-50 ${fonts.font_7.className} mt-20 relative`}
+        className={`capitalize text-3xl xl:text-7xl text-center text-black z-50 ${fonts.font_7.className} mt-10 relative`}
       >
         facility
       </div>
-      <div className="swiper-container h-auto  mt-24">
+      <div className="swiper-container h-auto mt-10 xl:mt-24 max-w-[1600px] w-full mx-auto overflow-hidden">
         <Swiper
-          spaceBetween={100}
-          slidesPerView={3}
+          spaceBetween={50}
+          slidesPerView={displayCount}
           pagination={{ clickable: true, dynamicBullets: true }}
           navigation={{
             nextEl: ".swiper-button-next",
@@ -114,7 +131,7 @@ const Feature = () => {
             },
           ].map((element, index) => {
             return (
-              <SwiperSlide key={index} className=" my-20  ">
+              <SwiperSlide key={index} className="my-10 xl:my-20  ">
                 <div className="w-full h-[100px] flex justify-center items-center">
                   <div className="w-[120px] relative">
                     <element.Icon />
@@ -123,11 +140,11 @@ const Feature = () => {
                 <div
                   className={`w-full h-auto  text-black ${fonts.font_3.className}`}
                 >
-                  <div className="text-center text-3xl mt-8">
+                  <div className="text-center text-xl xl:text-3xl mt-3 xl:mt-8">
                     {element?.header}
                   </div>
                   <div
-                    className={`text-center mt-8 text-sm ${fonts.font_1.className}`}
+                    className={`text-center mt-3 xl:mt-8 text-xs xl:text-sm m-auto w-full  md:w-[700px] lg:w-full ${fonts.font_1.className}`}
                   >
                        {element.des}
                   </div>

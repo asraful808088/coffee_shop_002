@@ -5,16 +5,16 @@ import Image from "next/image";
 import { fonts } from "../fonts/font";
 export default function NewItem001() {
   return (
-    <div className="w-full">
+    <div className="w-full  p-4">
       <div
-        className={`mt-20  ${fonts.font_7.className} text-white text-center text-7xl`}
+        className={`mt-20  ${fonts.font_7.className} text-white text-center text-3xl xl:text-7xl `}
       >
         Try Our New Coffee Creations Today!
       </div>
       {[1,2,1].map((element,index)=>{
-        return <div key={index} className="mt-20 h-[800px] w-[1600px]  m-auto flex relative">
-        <div className={`w-1/2 relative h-full  p-20 flex items-center justify-center ${index%2!=0?'-order-1':"order-1"}`}>
-          <div className="h-[500px] w-[500px] z-10 relative group overflow-hidden">
+        return <div key={index} className="mt-20 lg:h-[800px] max-w-[1600px] w-full  m-auto flex flex-col lg:flex-row relative mx-0 min-[1600px]:mx-auto">
+        <div className={` w-full lg:w-1/2 relative h-full  p-5 xl:p-20 flex items-center justify-center ${index%2!=0?'-order-1':"-order-2 lg:order-1"}`}>
+          <div className="aspect-video lg:aspect-square w-full lg:w-[500px] z-10 relative group overflow-hidden">
             <div className="h-full w-full absolute bg-black bg-opacity-50 transition-all group-hover:bg-opacity-60  group-hover:scale-110 z-10 flex justify-center items-center" >
             <div className={`h-10 w-32 flex justify-center items-center text-white transition-all  group-hover:scale-90 cursor-pointer border-white border-2 ${fonts.font_7.className}`} >
               Checkout
@@ -23,8 +23,8 @@ export default function NewItem001() {
             <Image src={Bg} alt="" layout="fill" objectFit="cover"  className="group-hover:scale-110 transition-all"/>
           </div>
         </div>
-        <div className={`w-1/2 relative h-full  flex justify-center items-center ${index%2==0?'-order-1':"order-1"}`}>
-          <div className="relative  top-0 left-0  h-[600px] w-[100%] bg-white">
+        <div className={`w-full lg:w-1/2 relative h-full  flex justify-center items-center ${index%2==0?'-order-1':"order-1"} `}>
+          <div className="relative  top-0 left-0  h-auto pb-14 lg:pb-4 w-[100%] bg-white">
             <Image
               src={index%2==0? Bg6:Bg7}
               alt=""
@@ -32,9 +32,9 @@ export default function NewItem001() {
               objectFit="cover"
               className={`absolute ${index%2!=0? 'opacity-20':'opacity-10'} ${index/2!=0?'-order-1':"order-1"}`}
             />
-            <div className={`relative h-full w-full p-10 `}>
+            <div className={`relative h-auto w-full p-6 xl:p-10 `}>
               <div className={`text-5xl ${fonts.font_3.className}`}>Lungo</div>
-              <div className={` text-sm mt-10 ${fonts.font_1.className}`}>
+              <div className={` text-[10px] sm:text-xs xl:text-sm mt-5 xl:mt-10 ${fonts.font_1.className}`}>
                 A Lungo, which means {"long"} in Italian, is a coffee drink made
                 by brewing an espresso with more water, resulting in a larger,
                 milder cup. The longer extraction time, typically 45-60 seconds,
@@ -46,14 +46,25 @@ export default function NewItem001() {
                 delightful garnish. Perfect for those who enjoy a longer, more
                 leisurely coffee experience.
               </div>
-              <div className="w-full relative">
+              <div className="w-full relative mt-1">
                 <div
-                  className={` text-xl font-extrabold ${fonts.font_7.className}`}
+                  className={`text-base xl:text-xl font-extrabold ${fonts.font_7.className}`}
                 >
                   Ingredients:
                 </div>
-                <ul className="w-full ml-5 list-disc">
-                  <li
+                <ul className="w-full ml-2 xl:ml-5 list-disc">
+                  {[1,1,1,1,1,1,1,1].map((element,index)=>{
+                      return <li
+                      key={index}
+                      className={`mt-2 font-extrabold ${fonts.font_7.className} flex items-center justify-between`}
+                    >
+                      <span className=" text-sm xl:text-base   ">Milk or cream</span>{" "}
+                      <span className="flex-grow  text-sm xl:text-base    border-t border-dotted border-black"></span>{" "}
+                      <span className=" text-sm xl:text-base   "> As desired</span>
+                      <span className="text-gray-600 text-sm xl:text-base   "> {"(optional)"}</span>
+                    </li>
+                  })}
+                  {/* <li
                     className={`mt-2 font-extrabold ${fonts.font_7.className} flex items-center justify-between`}
                   >
                     <span>Coffee beans</span>{" "}
@@ -98,7 +109,7 @@ export default function NewItem001() {
                     <span className="flex-grow  border-t border-dotted border-black"></span>{" "}
                     <span> For garnish</span>{" "}
                     <span className="text-gray-600"> {"(optional)"}</span>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>

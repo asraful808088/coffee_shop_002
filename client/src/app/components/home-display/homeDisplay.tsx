@@ -8,6 +8,7 @@ import SearchIcon from "@/app/assets/icon/search-icon.svg";
 import LoginIcon from "@/app/assets/icon/noun-login-6292758.svg";
 import Navheader from "../nav-header/navHeader";
 import { fonts } from "../fonts/font";
+import NavMenu from "../navMenu/navMenu";
 interface HomeDisplay {
   imageItem: [];
   singleContent: boolean;
@@ -18,7 +19,7 @@ interface HomeDisplay {
 export default function HomeDisplay(props: HomeDisplay): React.FC {
   const [loadItem, setLoaditem] = useState([]);
   const [currentIndex, setIndex] = useState(0);
-
+  const [activeNav,setActiveNav] = useState(false) 
   const asdasd =
     "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const [cls, setCls] = useState({
@@ -78,13 +79,16 @@ export default function HomeDisplay(props: HomeDisplay): React.FC {
     return;
   }
   return (
-    <div className="w-full  h-[480px]  md:h-[600px] xl:h-[1000px] grid grid-cols-8 grid-rows-8 ">
+    <div className="w-full  h-[480px]  md:h-[600px] xl:h-[1000px] grid grid-cols-8 grid-rows-8 relative">
+       <NavMenu activeNav={activeNav} onClose={()=>setActiveNav(false)}/>
       <div className=" h-[480px] md:h-[600px] xl:h-[1000px] w-full bg-black bg-opacity-40 absolute z-20 flex flex-col top-0 left overflow-hidden">
-      <Navheader />
+      <Navheader onMenuClick={()=>{
+        setActiveNav(!activeNav)
+      }}/>
         <div className="flex-grow w-full  md:h-[94%] flex justify-center items-center relative bg-black bg-opacity-50">
           <div className="max-w-[1200px] w-full h-full  flex flex-col items-center p-[15px] sm:p-[30px] md:p-[50px] justify-center">
             <p
-              className={` text-white text-center text-base md:text-3xl xl:text-5xl ${fonts.font_3.className}`}
+              className={` text-white text-center text-xl md:text-3xl xl:text-5xl ${fonts.font_3.className}`}
             >
               Lorem ipsum dolor sit amet consectetur alibero recusandae?
             </p>

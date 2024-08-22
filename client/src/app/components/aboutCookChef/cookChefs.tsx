@@ -12,14 +12,14 @@ import Image from "next/image";
 import { fonts } from "../fonts/font";
 export default function CookChefs() {
   return (
-    <div className="w-[1600px]   m-auto">
+    <div className="max-w-[1600px]  w-full  m-auto">
       <div
-        className={`text-5xl text-center my-10 mt-14 ${fonts.font_8.className} capitalize text-white`}
+        className={`text-2xl md:text-5xl text-center my-5 md:my-10 mt-14 ${fonts.font_8.className} capitalize text-white`}
       >
         introducing with our {"chef's"}
       </div>
       <div
-        className={`text-center ${fonts.font_7.className} text-7xl mt-10 capitalize text-white`}
+        className={`text-center ${fonts.font_7.className} text-3xl md:text-7xl mt-2 md:mt-10 capitalize text-white `}
       >
         Our Special {"Chef's"}
       </div>
@@ -40,16 +40,16 @@ export default function CookChefs() {
         return (
           <div
             key={index}
-            className=" h-[600px] w-full flex overflow-hidden mb-10"
+            className=" w-full flex overflow-hidden mb-2 md:mb-10 flex-col lg:flex-row p-2 md:p-10 lg:p-5"
           >
             <div
-              className={`w-[50%] h-full flex justify-center items-center ${
-                index % 2 != 0 ? "-order-1" : "1"
+              className={`lg:w-[50%] h-[400px] md:h-[600px] flex justify-center items-center ${
+                index % 2 != 0 ? "-order-3 lg:-order-1" : "-order-3 lg:order-1"
               }`}
             >
-              <div className="h-[400px] w-[400px]   -translate-y-[25%] ">
-                <div className="h-[600px] w-[400px] flex items-end overflow-hidden rounded-b-full ">
-                  <div className="h-[400px] w-[400px] bg-white bg-opacity-10 rounded-full  border-2 group translate-y-[1%]">
+              <div className="h-[400px] md:w-[400px] w-[340px]  -translate-y-[25%] ">
+                <div className="h-[600px] md:h-[600px] md:w-[400px] w-[340px] flex items-end overflow-hidden rounded-b-full ">
+                  <div className="h-[340px] md:h-[400px] md:w-[400px] w-[340px]  bg-white bg-opacity-10 rounded-full  border-2 group translate-y-[1%]">
                     <Image
                       src={element.image}
                       alt=""
@@ -61,20 +61,20 @@ export default function CookChefs() {
               </div>
             </div>
             <div
-              className={`w-[50%] h-full flex justify-center items-center ${
+              className={`lg:w-[50%] h-[600px] flex justify-center items-center ${
                 index % 2 == 0 ? "-order-1" : "1"
               }`}
             >
-              <div className="w-full h-[600px] bg-slate-100 translate-y-[10%] relative">
+              <div className="w-full h-auto py-5 md:py-10 pt-10 md:pt-20 bg-slate-100 translate-y-[10%] relative">
                 <Image src={CardBg} alt="" className="absolute opacity-5" />
                 <div className="relative h-full w-full flex flex-col justify-center items-center pb-10">
                   <div
-                    className={`text-center ${fonts.font_3.className} text-3xl font-extrabold`}
+                    className={`text-center ${fonts.font_3.className} text-xl md:text-3xl font-extrabold`}
                   >
                     Liam Noah Oliver
                   </div>
                   <div
-                    className={`w-[90%] text-center ${fonts.font_7.className} mt-10 text-xl`}
+                    className={`w-[90%] text-center ${fonts.font_7.className} text-base mt-10 md:text-xl`}
                   >
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Molestias cum alias excepturi enim repudiandae sit
@@ -91,7 +91,7 @@ export default function CookChefs() {
                       <Sig />
                     </div>
                   </div>
-                  <div className="w-[40%] h-[50px] mt-10 flex justify-around items-center">
+                  <div className="w-[80%] md:w-[60%] lg:w-[40%] h-[50px] mt-10 flex justify-around items-center">
                     <Media1 />
                     <Media2 />
                     <Media3 />

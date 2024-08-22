@@ -10,18 +10,18 @@ import Media3 from "@/app/assets/media/Path 132.svg";
 import Media4 from "@/app/assets/media/x-social-media-round-icon.svg";
 export default function Waiters() {
   return (
-    <div className="w-[1600px] h-auto pb-20  m-auto">
+    <div className=" max-w-[1600px] w-full relative h-auto pb-20  m-auto">
       <div
-        className={`text-5xl text-center my-10 mt-14 ${fonts.font_8.className} capitalize text-white`}
+        className={`text-2xl md:text-5xl text-center my-5 md:my-10 mt-5 md:mt-14 ${fonts.font_8.className} capitalize text-white`}
       >
         introducing with our {"waiter's"}
       </div>
       <div
-        className={`text-center ${fonts.font_7.className} text-7xl mt-10 capitalize text-white`}
+        className={`text-center ${fonts.font_7.className} text-3xl md:text-7xl mt-5 md:mt-10 capitalize text-white`}
       >
         Our Responsivle {"waiter's"}
       </div>
-      <div className="mt-10 w-full flex justify-center">
+      <div className="mt-10 w-full flex justify-center relative h-auto flex-wrap">
         {[
           {
             image: Waiter1,
@@ -37,10 +37,10 @@ export default function Waiters() {
           },
         ].map((element, index) => {
           return (
-            <div  key={index} className="w-full">
+            <div  key={index} className="w-[350px] mx-1">
               <div
                
-                className="h-[390px] w-[350px] bg-white bg-opacity-10 relative mx-10 m-10 flex justify-end flex-col"
+                className="h-[390px] w-full bg-white bg-opacity-10 relative   flex justify-end flex-col"
               >
                 <Image
                   src={element.image}
@@ -55,7 +55,7 @@ export default function Waiters() {
                     <div className={`text-center text-white m-auto w-[80%]  ${fonts.font_11.className} `}>
                         Lorem ipsum dolor sit,  ducimus numquam quam velit distinctio ipsa explicabo, minus est?
                     </div>
-                    <div className="w-[50%] h-[50px] mt-5 flex justify-around items-center m-auto ">
+                    <div className="w-[80%] md:w-[50%] h-[50px] mt-5 flex justify-around items-center m-auto flex-wrap">
                     <Media1 fill={"white"}/>
                     <Media2 fill={"white"}/>
                     <Media3 fill={"white"}/>

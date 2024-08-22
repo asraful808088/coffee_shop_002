@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        "1100px": "1100px",
+      },
       gridTemplateColumns: {
         "prodect001-auto-fit": "repeat(auto-fit, minmax(320px, 1fr))",
       },

@@ -1,48 +1,56 @@
+"use client"
 import DisplayImage from "@/app/assets/demo/New folder/close-up-hands-barista-make-latte-coffee-art-paint.jpg";
-import { fonts } from "@/app/components/fonts/font";
-import Navheader from "@/app/components/nav-header/navHeader";
 import CookChefs from "@/app/components/aboutCookChef/cookChefs";
-import Image from "next/image";
-import Waiters from "@/app/components/waiters/waiter";
-import Footer from "@/app/components/footer/footer";
 import FinalWordsOfAbout from "@/app/components/finalWordsOfAbout/about";
+import { fonts } from "@/app/components/fonts/font";
+import Footer from "@/app/components/footer/footer";
+import Navheader from "@/app/components/nav-header/navHeader";
+import NavMenu from "@/app/components/navMenu/navMenu";
+import Waiters from "@/app/components/waiters/waiter";
+import Image from "next/image";
+import { useState } from "react";
 export default function AboutUs() {
+  const [activeNav,setActiveNav] = useState(false) 
   return (
-  <>
-  
-  <div className="w-full relative h-[750px] bg-slate-400">
-      <div className="w-full h-full absolute flex flex-col">
-        <div className=" w-full h-28 z-10 relative "></div>
-        <div className="bg-black bg-opacity-50 w-full flex-grow z-10 relative flex justify-center items-center flex-col">
-          <div className={`${fonts.font_7.className} text-white text-7xl`}>
-            About Us
+    <>
+      <div className="w-full relative h-[400px] md:h-[550px] lg:h-[650px] xl:h-[750px] bg-slate-400">
+        <NavMenu activeNav={activeNav} onClose={()=>setActiveNav(false)}/>
+        <div className="w-full h-full absolute flex flex-col">
+          <div className=" w-full h-28 z-10 relative "></div>
+          <div className="bg-black bg-opacity-50 w-full flex-grow z-10 relative flex justify-center items-center flex-col">
+            <div
+              className={`${fonts.font_7.className} text-white text-4xl lg:text-7xl`}
+            >
+              About Us
+            </div>
+            <div
+              className={`max-w-[650px] w-full lg:max-w-[900px]  text-center text-white ${fonts.font_11.className}  text-sm md:text-lg lg:text-2xl mt-2 mb-4`}
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
+              consequuntur cum, eos sequi minus voluptatibus quis iusto corrupti
+              molestias odit minima itaque fuga nesciunt, neque in ab delectus.
+              Rerum, ex?
+            </div>
           </div>
-          <div
-            className={`w-[900px] text-center text-white ${fonts.font_11.className} text-2xl mt-2 mb-4`}
-          >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
-            consequuntur cum, eos sequi minus voluptatibus quis iusto corrupti
-            molestias odit minima itaque fuga nesciunt, neque in ab delectus.
-            Rerum, ex?
-          </div>
+          <Image
+            src={DisplayImage}
+            alt=""
+            className="w-full h-full relative "
+            objectFit="cover"
+            layout="fill"
+          />
         </div>
-        <Image
-          src={DisplayImage}
-          alt=""
-          className="w-full h-full relative "
-          objectFit="cover"
-          layout="fill"
-        />
+        <div className="z-50">
+          <Navheader onMenuClick={()=>{
+            setActiveNav(!activeNav)
+          }}/>
+        </div>
       </div>
-      <div className="z-50">
-        <Navheader />
-      </div>
-    </div>
-    <CookChefs />
-    <br />
-    <Waiters />
-    <FinalWordsOfAbout />
-    <Footer />
-  </>
+      <CookChefs />
+      <br />
+      <Waiters />
+      <FinalWordsOfAbout />
+      <Footer />
+    </>
   );
 }

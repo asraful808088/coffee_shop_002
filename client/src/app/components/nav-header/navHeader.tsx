@@ -2,6 +2,7 @@
 import CartIcon from "@/app/assets/icon/cart-large-minimalistic-svgrepo-com.svg";
 import FavoIcon from "@/app/assets/icon/favorite-svgrepo-com (1).svg";
 import CoffeeLogo from "@/app/assets/icon/logo.svg";
+import MenuIcon from "@/app/assets/icon/menu.svg";
 import LoginIcon from "@/app/assets/icon/noun-login-6292758.svg";
 import SearchIcon from "@/app/assets/icon/search-icon.svg";
 import Link from "next/link";
@@ -10,20 +11,23 @@ import { fonts } from "../fonts/font";
 interface NavheaderProps {
   bgTransparent: boolean;
   hidddenLink: boolean;
+  onMenuClick: any;
 }
 export default function Navheader(props: NavheaderProps) {
   const p = usePathname();
 
   return (
-    <div className="w-full">
+    <div className="w-full relative ">
       <div
         className={` h-28  w-full left-0 top-0 absolute  ${
           props.bgTransparent ? "" : "bg-black"
         } bg-opacity-50`}
       ></div>
-      <div className={`w-full   h-28 px-20 flex bg-transparent z-20 relative`}>
-        <div className="w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%]   flex p-2">
-          <div className=" h-16 w-16 ">
+      <div
+        className={`w-full   h-28 px-1 sm:px-12 md:px-20 flex bg-transparent z-20 relative justify-between `}
+      >
+        <div className="pl-5 sm:pl-0 w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%]   flex p-2 ">
+          <div className="pt-3 sm:pt-0  aspect-square w-10 sm:w-14 md:w-16 ">
             <CoffeeLogo fill="white" />
           </div>
         </div>
@@ -106,24 +110,31 @@ export default function Navheader(props: NavheaderProps) {
             CONTACTS
           </Link>
         </div>
-        <div className="w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%] h-full  flex items-center justify-end">
-          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px]">
+        <div className="w-[38%] lg:w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%] h-full  flex items-center justify-end">
+          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] ">
             <SearchIcon fill="white" stroke="white" />
           </div>
-          <div className="h-7 w-7  mx-2 cursor-pointer relative">
+          
+          <div className="h-7 w-7  mx-2 cursor-pointer relative hidden md:block">
             <div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
               99+
             </div>
             <CartIcon />
           </div>
-          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] relative">
+          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] relative hidden md:block">
             <div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
               99+
             </div>
             <FavoIcon stroke="white" />
           </div>
-          <div className="h-7 w-7   cursor-pointer scale-125 mx-3">
+          <div className="h-7 w-7   cursor-pointer scale-125 mx-3 hidden md:block">
             <LoginIcon fill="white" stroke="white" />
+          </div>
+          <div
+            className="aspect-square w-8  mx-2 cursor-pointer p-[4px] block lg:hidden"
+            onClick={props.onMenuClick}
+          >
+            <MenuIcon fill="white" stroke="white" />
           </div>
         </div>
       </div>
