@@ -12,7 +12,6 @@ export default function ReviewPage() {
       callback: (value) => {
         if (value.data) {
           setData(value.data);
-          console.log(value.data)
         }
       },
     });

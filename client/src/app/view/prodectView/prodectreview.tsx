@@ -2,14 +2,20 @@
 import Bg from "@/app/assets/bg/bg4.png";
 import Image1 from "@/app/assets/coffee/andres-vera-BewKTZMv7V0-unsplash.jpg";
 import LikeIcon from "@/app/assets/icon/favorite-svgrepo-com (1).svg";
+import OptionIcon from "@/app/assets/icon/option.svg";
+import TokenIcon from "@/app/assets/icon/token.svg";
+import TransitionIcon from "@/app/assets/icon/wallet-svgrepo-com.svg";
 import { fonts } from "@/app/components/fonts/font";
 import Footer from "@/app/components/footer/footer";
 import Navheader from "@/app/components/nav-header/navHeader";
 import ProdectCard from "@/app/components/prodectCard/card";
 import RatingComponent from "@/app/components/starbar/starbar";
+import Toast from "@/app/components/toast/toast";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import LoginAndCreateToast from "@/app/components/login_and_create/toast";
+
 interface ProdectReviewProps {
   prodectDetails: Object;
   prodectItems: Array;
@@ -18,18 +24,66 @@ export default function ProdectReview(props: ProdectReviewProps) {
   const navigate = useRouter();
   const [imageList, setImageList] = useState([]);
   const [activeImage, setActiveImage] = useState({});
+  const [toastActive, setToastActive] = useState(false);
+  const [activeLoginToast,setActiveLoginToast]  =  useState(false)
   useEffect(() => {
     if (props.prodectDetails) {
       setImageList([
         { ...props?.prodectDetails?.mainImage },
         ...props.prodectDetails?.imageItems,
       ]);
-      setActiveImage({ ...props?.prodectDetails?.mainImage })
+      setActiveImage({ ...props?.prodectDetails?.mainImage });
     }
   }, [props.prodectDetails]);
   return (
     <div className="w-full relative">
-      <Navheader hidddenLink/>
+      <LoginAndCreateToast activeToast={activeLoginToast} onCloseToast={()=>{
+        setActiveLoginToast(false)
+      }}/>
+      <Toast center activetoast={toastActive}>
+        <div className="aspect-video w-[1200px] bg-white shadow-lg ">
+          <div className="w-full relative p-2 pr-3 flex items-end justify-end cursor-pointer">
+            <div
+              className="rotate-45 text-3xl w-fit h-fit text-black font-extrabold"
+              onClick={() => {
+                setToastActive(false);
+              }}
+            >
+              +
+            </div>
+          </div>
+          <div className="w-full relative h-40 ">
+            <div className="w-40 relative ml-4">
+              <TransitionIcon />
+            </div>
+          </div>
+          <div className="w-full relative px-3 flex">
+            <div className="w-1/2 relative">
+              <h3 className={`${fonts.font_1.className}`}>Token</h3>
+              <div className="w-full relative pr-5">
+                <div className="w-full relative bg-slate-500 mt-2   ">
+                  <div className="w-full relative flex items-center">
+                    <div className="h-12 aspect-square px-2  flex items-center">
+                      <TokenIcon />
+                    </div>
+                    <div className={`${fonts.font_7.className} h-fit`}>Token-Name</div>
+                  </div>
+                  <div className=" px-3 " >
+                          asdasdsa
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-1/2 relative">
+              <h3 className={`${fonts.font_1.className}`}>Purchase History</h3>
+            </div>
+          </div>
+        </div>
+      </Toast>
+
+      <Navheader hidddenLink onloginActive={()=>{
+        setActiveLoginToast(true)
+      }} />
       <div className="w-full h-full flex justify-center items-center ">
         <div className="w-full h-auto  relative overflow-hidden ">
           <Image
@@ -60,10 +114,13 @@ export default function ProdectReview(props: ProdectReviewProps) {
                     <div
                       key={index}
                       className={`h-20 w-20 bg-slate-400 rounded-sm mx-2 cursor-pointer relative mt-1${
-                        `${element?.host}${element?.path}${element?.webUrl}` == `${activeImage?.host}${activeImage?.path}${activeImage?.webUrl}` ? "border-2" : ""
+                        `${element?.host}${element?.path}${element?.webUrl}` ==
+                        `${activeImage?.host}${activeImage?.path}${activeImage?.webUrl}`
+                          ? "border-2"
+                          : ""
                       }`}
-                      onClick={()=>{
-                        setActiveImage(element)
+                      onClick={() => {
+                        setActiveImage(element);
                       }}
                     >
                       <div className="absolute h-full w-full bg-slate-800 animate-pulse"></div>
@@ -84,15 +141,16 @@ export default function ProdectReview(props: ProdectReviewProps) {
               </div>
             </div>
             <div className="h-full relative lg:w-1/2 p-3 lg:p-0">
-              <div className={`${fonts.font_3.className} text-3xl lg:text-5xl text-white`}>
+              <div
+                className={`${fonts.font_3.className} text-3xl lg:text-5xl text-white`}
+              >
                 {props.prodectDetails?.header}
               </div>
               <div
                 className={`${fonts.font_11.className} text-white text-xs sm:text-sm xl:text-base w-full xl:w-[95%] 2xl:w-[80%] mt-5 `}
               >
-                {/* {props.prodectDetails?.description} */}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero eius minus nesciunt minima. At cum porro eius, beatae explicabo esse nobis voluptatum! Facere reprehenderit, iure qui error sunt tempora nobis.minima. At cum porro eius, beatae explicabo esse nobis voluptatum! Facere reprehenderit,eius, beatae explicabo esse nobis voluptatum!beatae explicabo esse nobis voluptatum!beatae explicabo esse nobis voluptatum!beatae explicabo esse nobis voluptatum! Facere reprehenderit, iure qui error sunt tempora nobis.
-                Quas modi earum, provident tempore, quasi ipsam voluptas labore consequatur debitis ullam asperiores, unde impedit commodi dolores voluptatibus dolorum reiciendis iure quisquam porro cum. Error sint possimus quos facere eligendi.
+                {props.prodectDetails?.description}
+               
               </div>
               <br />
               <div className="w-[80%]">
@@ -173,6 +231,14 @@ export default function ProdectReview(props: ProdectReviewProps) {
                 <div className="h-6 w-6 ml-2 cursor-pointer">
                   <LikeIcon fill="white" />
                 </div>
+                <div
+                  className="h-7 w-7 ml-4 cursor-pointer"
+                  onClick={() => {
+                    setToastActive(true);
+                  }}
+                >
+                  <OptionIcon fill="white" />
+                </div>
               </div>
             </div>
           </div>
@@ -188,8 +254,8 @@ export default function ProdectReview(props: ProdectReviewProps) {
           {props?.prodectItems?.map((element, index) => {
             return (
               <ProdectCard
-              marginOff
-              widthFull
+                marginOff
+                widthFull
                 id={element._id}
                 onDisplay={(e) => {
                   navigate.push(`/review/${e.prodectId}`, { scroll: true });

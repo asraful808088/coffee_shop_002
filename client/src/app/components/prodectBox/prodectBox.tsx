@@ -160,7 +160,7 @@ export default function ProductBox(props: ProductBoxProps) {
   }, []);
 
   return (
-    <div className="w-[1600px] m-auto relative h-auto mt-20 ">
+    <div className="max-w-[1600px] w-full m-auto relative h-auto mt-20 p-4">
       <div
         className={`text-7xl text-center ${fonts.font_7.className} text-white`}
       >

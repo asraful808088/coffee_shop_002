@@ -12,6 +12,7 @@ interface NavheaderProps {
   bgTransparent: boolean;
   hidddenLink: boolean;
   onMenuClick: any;
+  onloginActive:any
 }
 export default function Navheader(props: NavheaderProps) {
   const p = usePathname();
@@ -127,7 +128,7 @@ export default function Navheader(props: NavheaderProps) {
             </div>
             <FavoIcon stroke="white" />
           </div>
-          <div className="h-7 w-7   cursor-pointer scale-125 mx-3 hidden md:block">
+          <div className="h-7 w-7   cursor-pointer scale-125 mx-3 hidden md:block" onClick={()=>props.onloginActive()}>
             <LoginIcon fill="white" stroke="white" />
           </div>
           <div
