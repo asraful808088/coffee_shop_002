@@ -1,5 +1,5 @@
-import userAction from "./userInfo/action/action";
-import userInfo from "./userInfo/state/state.";
+import userAction from "../action/action";
+import userInfo from "../state/state.";
 function userReducer(state = userInfo, action) {
   switch (action.type) {
     case userAction.INJECT_USER_INFO:

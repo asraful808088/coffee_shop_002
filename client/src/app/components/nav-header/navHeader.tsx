@@ -8,13 +8,16 @@ import SearchIcon from "@/app/assets/icon/search-icon.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { fonts } from "../fonts/font";
+import { useSelector } from "react-redux";
 interface NavheaderProps {
   bgTransparent: boolean;
   hidddenLink: boolean;
   onMenuClick: any;
   onloginActive:any
+  onLike:any
 }
 export default function Navheader(props: NavheaderProps) {
+  const userInfo = useSelector((state) => state.userInfo);
   const p = usePathname();
 
   return (
@@ -122,15 +125,21 @@ export default function Navheader(props: NavheaderProps) {
             </div>
             <CartIcon />
           </div>
-          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] relative hidden md:block">
-            <div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
+          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] relative hidden md:block" onClick={()=>{
+            if (props.onLike) {
+              props.onLike()
+            }
+          }}>
+            {(userInfo.email && userInfo.name)?<div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
               99+
-            </div>
+            </div>:null}
             <FavoIcon stroke="white" />
           </div>
-          <div className="h-7 w-7   cursor-pointer scale-125 mx-3 hidden md:block" onClick={()=>props.onloginActive()}>
+          
+
+          {!(userInfo.email && userInfo.name)? <div className="h-7 w-7   cursor-pointer scale-125 mx-3 hidden md:block" onClick={()=>props.onloginActive()}>
             <LoginIcon fill="white" stroke="white" />
-          </div>
+          </div>:null}
           <div
             className="aspect-square w-8  mx-2 cursor-pointer p-[4px] block lg:hidden"
             onClick={props.onMenuClick}

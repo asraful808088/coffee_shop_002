@@ -34,12 +34,18 @@ export default function LoginAndCreateToast(props: LoginAndCreateToastProps) {
           </div>
           {loginActive ? (
             <Login
+              onClose={() => {
+                setloginActive(false);
+              }}
               onChangePage={() => {
                 setloginActive(!loginActive);
               }}
             />
           ) : (
             <CreateAccount
+              onFormfinish={() => {
+                setloginActive(!loginActive);
+              }}
               onChangePage={() => {
                 setloginActive(!loginActive);
               }}

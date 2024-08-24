@@ -1,8 +1,16 @@
+import userLogin from "@/app/network/login/login";
+import { useState } from "react";
 import { fonts } from "../fonts/font";
 interface LoginProps {
   onChangePage: any;
+  onClose: any;
 }
 export default function Login(props: LoginProps) {
+  const [userInfo, setUserinfo] = useState({
+    email: "",
+    password: "",
+  });
+  const [err, setErr] = useState(false);
   return (
     <div className="h-full relative flex-grow p-10">
       <div className={`${fonts.font_3.className} text-5xl font-extrabold mt-3`}>
@@ -16,6 +24,10 @@ export default function Login(props: LoginProps) {
           placeholder="email"
           className={`h-full w-full relative outline-none border-none bg-transparent px-3 text-xl   ${fonts.font_4.className}`}
           id="email"
+          value={userInfo.email}
+          onChange={(e) => {
+            setUserinfo({ ...userInfo, email: e.target.value });
+          }}
         />
       </div>
       <div className="w-full max-w-[450px] h-11 bg-gray-200 mt-5 relative shadow-lg ">
@@ -25,8 +37,17 @@ export default function Login(props: LoginProps) {
           placeholder="password"
           className={`h-full w-full relative outline-none border-none bg-transparent px-3 text-xl   ${fonts.font_4.className}`}
           id="password"
+          value={userInfo.password}
+          onChange={(e) => {
+            setUserinfo({ ...userInfo, password: e.target.value });
+          }}
         />
       </div>
+      {err ? (
+        <div className="max-w-[450px] w-full relative text-center text-red-700 mt-4 text-sm">
+          authentication failed
+        </div>
+      ) : null}
       <div
         className="w-full p-1 relative cursor-pointer mt-2 text-sm hover:text-pink-900"
         onClick={() => props.onChangePage()}
@@ -36,6 +57,19 @@ export default function Login(props: LoginProps) {
       <div className="w-full flex">
         <div
           className={`px-10 relative py-2 bg-black text-white  ${fonts.font_4.className} mt-2 cursor-pointer`}
+          onClick={() => {
+            userLogin({ formInfo: userInfo }, (res) => {
+              if (res?.data) {
+                localStorage.setItem("token", res.data.token);
+                if (props.onClose) {
+                  props.onClose();
+                  setErr(false);
+                }
+              } else {
+                setErr(true);
+              }
+            });
+          }}
         >
           Login
         </div>

@@ -7,6 +7,7 @@ import TokenIcon from "@/app/assets/icon/token.svg";
 import TransitionIcon from "@/app/assets/icon/wallet-svgrepo-com.svg";
 import { fonts } from "@/app/components/fonts/font";
 import Footer from "@/app/components/footer/footer";
+import LoginAndCreateToast from "@/app/components/login_and_create/toast";
 import Navheader from "@/app/components/nav-header/navHeader";
 import ProdectCard from "@/app/components/prodectCard/card";
 import RatingComponent from "@/app/components/starbar/starbar";
@@ -14,7 +15,7 @@ import Toast from "@/app/components/toast/toast";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import LoginAndCreateToast from "@/app/components/login_and_create/toast";
+import { useSelector } from "react-redux";
 
 interface ProdectReviewProps {
   prodectDetails: Object;
@@ -25,7 +26,9 @@ export default function ProdectReview(props: ProdectReviewProps) {
   const [imageList, setImageList] = useState([]);
   const [activeImage, setActiveImage] = useState({});
   const [toastActive, setToastActive] = useState(false);
-  const [activeLoginToast,setActiveLoginToast]  =  useState(false)
+  const [activeLoginToast, setActiveLoginToast] = useState(false);
+  const [cartCount,setCartCount] = useState(0)
+  const userInfo = useSelector((state) => state.userInfo);
   useEffect(() => {
     if (props.prodectDetails) {
       setImageList([
@@ -37,10 +40,14 @@ export default function ProdectReview(props: ProdectReviewProps) {
   }, [props.prodectDetails]);
   return (
     <div className="w-full relative">
-      <LoginAndCreateToast activeToast={activeLoginToast} onCloseToast={()=>{
-        setActiveLoginToast(false)
-      }}/>
-      <Toast center activetoast={toastActive}>
+      <LoginAndCreateToast
+        activeToast={activeLoginToast}
+        
+        onCloseToast={() => {
+          setActiveLoginToast(false);
+        }}
+      />
+      <Toast center activetoast={toastActive} >
         <div className="aspect-video w-[1200px] bg-white shadow-lg ">
           <div className="w-full relative p-2 pr-3 flex items-end justify-end cursor-pointer">
             <div
@@ -66,11 +73,11 @@ export default function ProdectReview(props: ProdectReviewProps) {
                     <div className="h-12 aspect-square px-2  flex items-center">
                       <TokenIcon />
                     </div>
-                    <div className={`${fonts.font_7.className} h-fit`}>Token-Name</div>
+                    <div className={`${fonts.font_7.className} h-fit`}>
+                      Token-Name
+                    </div>
                   </div>
-                  <div className=" px-3 " >
-                          asdasdsa
-                  </div>
+                  <div className=" px-3 ">asdasdsa</div>
                 </div>
               </div>
             </div>
@@ -81,9 +88,18 @@ export default function ProdectReview(props: ProdectReviewProps) {
         </div>
       </Toast>
 
-      <Navheader hidddenLink onloginActive={()=>{
-        setActiveLoginToast(true)
-      }} />
+      <Navheader
+        hidddenLink
+        onloginActive={() => {
+          setActiveLoginToast(true);
+        }}
+        onLike={()=>{
+          if (!(userInfo.email && userInfo.name)) {
+            setActiveLoginToast(true);
+          } else {
+          }
+        }}
+      />
       <div className="w-full h-full flex justify-center items-center ">
         <div className="w-full h-auto  relative overflow-hidden ">
           <Image
@@ -150,7 +166,6 @@ export default function ProdectReview(props: ProdectReviewProps) {
                 className={`${fonts.font_11.className} text-white text-xs sm:text-sm xl:text-base w-full xl:w-[95%] 2xl:w-[80%] mt-5 `}
               >
                 {props.prodectDetails?.description}
-               
               </div>
               <br />
               <div className="w-[80%]">
@@ -198,7 +213,9 @@ export default function ProdectReview(props: ProdectReviewProps) {
               </div>
 
               <div className="w-fit relative flex mt-2">
-                <div className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all">
+                <div className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all" onClick={()=>setCartCount(value=>{
+                  return value+1
+                })}>
                   +
                 </div>
                 <div className="w-14 h-10  ">
@@ -206,12 +223,17 @@ export default function ProdectReview(props: ProdectReviewProps) {
                     type="number"
                     name=""
                     id=""
-                    value={0}
+                    value={cartCount}
                     className="h-full w-full relative border-2 bg-transparent flex justify-center items-center text-white text-center outline-none"
                     min={0}
                   />
                 </div>
-                <div className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all">
+                <div className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all" onClick={()=>setCartCount(value=>{
+                  if (value<=0) {
+                    return 0
+                  }
+                  return value-1
+                })}>
                   -
                 </div>
               </div>
@@ -219,6 +241,12 @@ export default function ProdectReview(props: ProdectReviewProps) {
               <div className="w-full mt-4 flex items-center ">
                 <div
                   className={`h-10 w-36 bg-white mr-2 rounded-sm flex items-center justify-center ${fonts.font_7.className} cursor-pointer`}
+                  onClick={() => {
+                    if (!(userInfo.email && userInfo.name)) {
+                      setActiveLoginToast(true);
+                    } else {
+                    }
+                  }}
                 >
                   Buy
                 </div>
@@ -228,17 +256,24 @@ export default function ProdectReview(props: ProdectReviewProps) {
                   Add-Cart
                 </div>
 
-                <div className="h-6 w-6 ml-2 cursor-pointer">
+                <div className="h-6 w-6 ml-2 cursor-pointer" onClick={()=>{
+                 if (!(userInfo.email && userInfo.name)) {
+                  setActiveLoginToast(true);
+                } else {
+                }
+                }}>
                   <LikeIcon fill="white" />
                 </div>
-                <div
-                  className="h-7 w-7 ml-4 cursor-pointer"
-                  onClick={() => {
-                    setToastActive(true);
-                  }}
-                >
-                  <OptionIcon fill="white" />
-                </div>
+                {userInfo.email && userInfo.name ? (
+                  <div
+                    className="h-7 w-7 ml-4 cursor-pointer"
+                    onClick={() => {
+                      setToastActive(true);
+                    }}
+                  >
+                    <OptionIcon fill="white" />
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
