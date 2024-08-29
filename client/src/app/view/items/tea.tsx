@@ -131,7 +131,7 @@ export default function TeaPage() {
         </div>
       </div>
 
-      <ProdectBox />
+      <ProdectBox  />
     </div>
   );
 }

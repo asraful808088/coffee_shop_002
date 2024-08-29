@@ -18,8 +18,13 @@ export async function POST(req: NextApiRequest, context) {
     }
     const payload = isExsist[0];
     payload["password"] = NaN;
-    const token = jwt.sign({ ...payload }, process.env.JWT_SECRET);
-    return NextResponse.json({ success: true, token }, { status: 200 });
+    const token = jwt.sign({ ...payload }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+    return NextResponse.json(
+      { success: true, token, name: payload["name"], email: payload["email"] },
+      { status: 200 }
+    );
   } else {
     return NextResponse.json(
       { message: "authentication failed", success: false },

@@ -18,6 +18,7 @@ export async function POST(req: NextRequest, res) {
     };
   });
   const modifyCoffee = allCoffee?.map((element, index) => {
+    
     return {
       id: element._id,
       aiDescription: element.aiDescription,

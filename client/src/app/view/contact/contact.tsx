@@ -9,6 +9,7 @@ import Navheader from "@/app/components/nav-header/navHeader";
 import NavMenu from "@/app/components/navMenu/navMenu";
 import Image from "next/image";
 import { useState } from "react";
+import DataInjectHeader from "@/app/components/dataInject/dataInject";
 export default function Contact() {
   const [activeNav, setActiveNav] = useState(false);
 
@@ -44,7 +45,7 @@ export default function Contact() {
           />
         </div>
         <div className="z-50">
-          <Navheader
+          <DataInjectHeader
             onMenuClick={() => {
               setActiveNav(!activeNav);
             }}

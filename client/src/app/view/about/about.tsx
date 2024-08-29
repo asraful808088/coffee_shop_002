@@ -1,20 +1,20 @@
-"use client"
+"use client";
 import DisplayImage from "@/app/assets/demo/New folder/close-up-hands-barista-make-latte-coffee-art-paint.jpg";
 import CookChefs from "@/app/components/aboutCookChef/cookChefs";
+import DataInjectHeader from "@/app/components/dataInject/dataInject";
 import FinalWordsOfAbout from "@/app/components/finalWordsOfAbout/about";
 import { fonts } from "@/app/components/fonts/font";
 import Footer from "@/app/components/footer/footer";
-import Navheader from "@/app/components/nav-header/navHeader";
 import NavMenu from "@/app/components/navMenu/navMenu";
 import Waiters from "@/app/components/waiters/waiter";
 import Image from "next/image";
 import { useState } from "react";
 export default function AboutUs() {
-  const [activeNav,setActiveNav] = useState(false) 
+  const [activeNav, setActiveNav] = useState(false);
   return (
     <>
       <div className="w-full relative h-[400px] md:h-[550px] lg:h-[650px] xl:h-[750px] bg-slate-400">
-        <NavMenu activeNav={activeNav} onClose={()=>setActiveNav(false)}/>
+        <NavMenu activeNav={activeNav} onClose={() => setActiveNav(false)} />
         <div className="w-full h-full absolute flex flex-col">
           <div className=" w-full h-28 z-10 relative "></div>
           <div className="bg-black bg-opacity-50 w-full flex-grow z-10 relative flex justify-center items-center flex-col">
@@ -41,9 +41,11 @@ export default function AboutUs() {
           />
         </div>
         <div className="z-50">
-          <Navheader onMenuClick={()=>{
-            setActiveNav(!activeNav)
-          }}/>
+          <DataInjectHeader
+            onMenuClick={() => {
+              setActiveNav(!activeNav);
+            }}
+          />
         </div>
       </div>
       <CookChefs />

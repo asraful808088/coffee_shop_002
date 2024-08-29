@@ -2,9 +2,9 @@
 import DemoImage from "@/app/assets/coffeeImage/view-3d-coffee-cup.jpg";
 import FullSTR from "@/app/assets/icon/Group 4.svg";
 import HelfSTR from "@/app/assets/icon/Group 5.svg";
-import Tag001 from "@/app/assets/tag/offer/tag001.svg";
 import Image from "next/image";
 import { useState } from "react";
+import Discount001 from "../discount001/discount001";
 import { fonts } from "../fonts/font";
 interface ProdectProps {
   header: string;
@@ -13,7 +13,9 @@ interface ProdectProps {
   onDisplay: any;
   id: string;
   widthFull: boolean;
-  marginOff:boolean
+  marginOff:boolean;
+  price:number;
+  discount:number;
 }
 export default function ProdectCard(props: ProdectProps) {
   const [activeImage, setActiveImage] = useState(false);
@@ -47,7 +49,7 @@ export default function ProdectCard(props: ProdectProps) {
         </div>
         <div className="relative flex justify-end z-50">
           <div className=" h-[60px] w-[60px] translate-x-3 -translate-y-4">
-            <Tag001 />
+            {props.discount?<Discount001  rate={props.discount}/>:null}
           </div>
         </div>
       </div>
@@ -79,10 +81,11 @@ export default function ProdectCard(props: ProdectProps) {
           nostrum quas temporibus alias`}
         </div>
         <div className={`w-full relative flex ${fonts.font_7.className}`}>
+        
           <spam className="mr-2 text-gray-500">
-            <strike>880$</strike>
+          {props.discount?<strike>({props.price+ (props.price + (props?.discount/100))})</strike>:null}
           </spam>
-          <spam className="text-white">700$</spam>
+          <spam className="text-white">{props.price}$</spam>
         </div>
       </div>
     </div>

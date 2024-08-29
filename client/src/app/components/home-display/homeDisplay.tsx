@@ -1,13 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 // import ads from '../../assets/image/patrick-tomasso-GXXYkSwndP4-unsplash.jpg'
-import CartIcon from "@/app/assets/icon/cart-large-minimalistic-svgrepo-com.svg";
-import FavoIcon from "@/app/assets/icon/favorite-svgrepo-com (1).svg";
-import CoffeeLogo from "@/app/assets/icon/logo.svg";
-import SearchIcon from "@/app/assets/icon/search-icon.svg";
-import LoginIcon from "@/app/assets/icon/noun-login-6292758.svg";
-import Navheader from "../nav-header/navHeader";
 import { fonts } from "../fonts/font";
+import Navheader from "../nav-header/navHeader";
 import NavMenu from "../navMenu/navMenu";
 interface HomeDisplay {
   imageItem: [];
@@ -15,11 +10,14 @@ interface HomeDisplay {
   header: string;
   content: string;
   buttonName: string;
+  onLike: any;
+  onLogin: any;
+  onCart: any;
 }
 export default function HomeDisplay(props: HomeDisplay): React.FC {
   const [loadItem, setLoaditem] = useState([]);
   const [currentIndex, setIndex] = useState(0);
-  const [activeNav,setActiveNav] = useState(false) 
+  const [activeNav, setActiveNav] = useState(false);
   const asdasd =
     "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   const [cls, setCls] = useState({
@@ -80,11 +78,22 @@ export default function HomeDisplay(props: HomeDisplay): React.FC {
   }
   return (
     <div className="w-full  h-[480px]  md:h-[600px] xl:h-[1000px] grid grid-cols-8 grid-rows-8 relative">
-       <NavMenu activeNav={activeNav} onClose={()=>setActiveNav(false)}/>
+      <NavMenu activeNav={activeNav} onClose={() => setActiveNav(false)} />
       <div className=" h-[480px] md:h-[600px] xl:h-[1000px] w-full bg-black bg-opacity-40 absolute z-20 flex flex-col top-0 left overflow-hidden">
-      <Navheader onMenuClick={()=>{
-        setActiveNav(!activeNav)
-      }}/>
+        <Navheader
+          onloginActive={() => props.onLogin()}
+          onLike={() =>{
+            props.onLike()
+            setActiveNav(false);
+          }}
+          onCart={() => {
+            props.onCart()
+            setActiveNav(false);
+          }}
+          onMenuClick={() => {
+            setActiveNav(!activeNav);
+          }}
+        />
         <div className="flex-grow w-full  md:h-[94%] flex justify-center items-center relative bg-black bg-opacity-50">
           <div className="max-w-[1200px] w-full h-full  flex flex-col items-center p-[15px] sm:p-[30px] md:p-[50px] justify-center">
             <p

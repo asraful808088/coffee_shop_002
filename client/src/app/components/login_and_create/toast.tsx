@@ -35,7 +35,9 @@ export default function LoginAndCreateToast(props: LoginAndCreateToastProps) {
           {loginActive ? (
             <Login
               onClose={() => {
-                setloginActive(false);
+                if (props.onCloseToast) {
+                  props.onCloseToast();
+                }
               }}
               onChangePage={() => {
                 setloginActive(!loginActive);

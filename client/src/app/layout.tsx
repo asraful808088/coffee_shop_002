@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Provider } from "react-redux";
+import SingleToast from "./components/singleToast/singleToast";
 import "./globals.css";
-import store from "./redux/storage";
 import { ProviderInjector } from "./redux/userInfo/storageInjector";
+import { useDispatch } from "react-redux";
+// singleToast
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <ProviderInjector>
-      {children}
-      </ProviderInjector>
-      
+        <ProviderInjector>
+          <SingleToastInject>{children}</SingleToastInject>
+        </ProviderInjector>
       </body>
     </html>
   );
 }
 
+interface SingleToastInjectProps {
+  children: React.ReactNode;
+}
+function SingleToastInject(props: SingleToastInjectProps) {
+
+
+  return <SingleToast>{props.children}</SingleToast>;
+}

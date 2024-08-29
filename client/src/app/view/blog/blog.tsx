@@ -10,6 +10,7 @@ import Navheader from "@/app/components/nav-header/navHeader";
 import NavMenu from "@/app/components/navMenu/navMenu";
 import Image from "next/image";
 import { useState } from "react";
+import DataInjectHeader from "@/app/components/dataInject/dataInject";
 export default function Blog() {
   const [activeNav,setActiveNav] = useState(false) 
   
@@ -44,7 +45,7 @@ export default function Blog() {
           />
         </div>
         <div className="z-50">
-          <Navheader onMenuClick={()=>{
+          <DataInjectHeader onMenuClick={()=>{
             setActiveNav(!activeNav)
           }}/>
         </div>

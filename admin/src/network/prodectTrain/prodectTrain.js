@@ -1,11 +1,9 @@
 import axios from "axios";
 import { config } from "../../config";
-export function postProdectItems({ data }, result) {
+export function postProdectItems(result) {
   const host = `${config.SERVER_HOST}/prodectTrain`;
-  const formData = new FormData();
-  formData.append("data", JSON.stringify(data));
   axios
-    .post(host, data)
+    .post(host, {})
     .then((res) => {
       if (result) {
         result({ res: res });

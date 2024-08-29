@@ -1,41 +1,26 @@
-import bcrypt from "bcryptjs";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
-import insertUser from "@/lib/mongo/operation/insert/user";
-
-export async function GET(req: NextApiRequest, context) {
+import getUser from "@/lib/mongo/operation/get/getUser";
+import jwt from "jsonwebtoken";
+import { NextRequest, NextResponse } from "next/server";
+export async function GET(req: NextRequest, context) {
   try {
-    const formData = await req.formData();
-    const name = formData.get("name")?.toString();
-    const email = formData.get("email")?.toString();
-    const password = formData.get("password")?.toString();
-    if (!name || name.trim().length < 2) {
-      return NextResponse.json({ error: "Name must be at least 2 characters long." }, { status: 400 });
+    const decoded = jwt.verify(
+      req.headers?.get("authorization")?.replaceAll("Bearer ", ""),
+      process.env.JWT_SECRET
+    );
+    if (decoded) {
+      const result = await getUser({ email: decoded?._doc?.email });
+      if (result.length != 0) {
+        return NextResponse.json(
+          { success: true, name: result[0].name, email: result[0].email },
+          { status: 200 }
+        );
+      } else {
+        return NextResponse.json({ success: false }, { status: 400 });
+      }
+    } else {
+      return NextResponse.json({ success: false }, { status: 400 });
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
-    }
-    if (!password || password.length < 8) {
-      return NextResponse.json({ error: "Password must be at least 8 characters long." }, { status: 400 });
-    }
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
-    try {
-        console.log("!@123")
-        console.log("!@123")
-        console.log("!@123")
-        await insertUser({
-            password:hashedPassword,
-            email:email,
-            name:name
-        })
-    } catch (error) {
-        console.log(error)
-        return NextResponse.json({ success:false, error: "An error occurred during processing." }, { status: 500 });
-    }
-    return NextResponse.json({success:true, message: "Form data is valid" });
   } catch (error) {
-    return NextResponse.json({ success:false, error: "An error occurred during processing." }, { status: 500 });
+    return NextResponse.json({ success: false }, { status: 400 });
   }
 }

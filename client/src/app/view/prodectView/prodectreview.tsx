@@ -1,6 +1,7 @@
 "use client";
 import Bg from "@/app/assets/bg/bg4.png";
 import Image1 from "@/app/assets/coffee/andres-vera-BewKTZMv7V0-unsplash.jpg";
+import AddCartIcon from "@/app/assets/icon/cart-plus-svgrepo-com.svg";
 import LikeIcon from "@/app/assets/icon/favorite-svgrepo-com (1).svg";
 import OptionIcon from "@/app/assets/icon/option.svg";
 import TokenIcon from "@/app/assets/icon/token.svg";
@@ -12,14 +13,18 @@ import Navheader from "@/app/components/nav-header/navHeader";
 import ProdectCard from "@/app/components/prodectCard/card";
 import RatingComponent from "@/app/components/starbar/starbar";
 import Toast from "@/app/components/toast/toast";
+import favoritePost from "@/app/network/favorite/favorite";
+import { injectProdect } from "@/app/redux/cart/actions";
+import { singleToastActive } from "@/app/redux/toats/action";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 interface ProdectReviewProps {
   prodectDetails: Object;
   prodectItems: Array;
+  isLike: boolean;
 }
 export default function ProdectReview(props: ProdectReviewProps) {
   const navigate = useRouter();
@@ -27,8 +32,9 @@ export default function ProdectReview(props: ProdectReviewProps) {
   const [activeImage, setActiveImage] = useState({});
   const [toastActive, setToastActive] = useState(false);
   const [activeLoginToast, setActiveLoginToast] = useState(false);
-  const [cartCount,setCartCount] = useState(0)
+  const [cartCount, setCartCount] = useState(0);
   const userInfo = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (props.prodectDetails) {
       setImageList([
@@ -42,12 +48,11 @@ export default function ProdectReview(props: ProdectReviewProps) {
     <div className="w-full relative">
       <LoginAndCreateToast
         activeToast={activeLoginToast}
-        
         onCloseToast={() => {
           setActiveLoginToast(false);
         }}
       />
-      <Toast center activetoast={toastActive} >
+      <Toast center activetoast={toastActive}>
         <div className="aspect-video w-[1200px] bg-white shadow-lg ">
           <div className="w-full relative p-2 pr-3 flex items-end justify-end cursor-pointer">
             <div
@@ -93,7 +98,7 @@ export default function ProdectReview(props: ProdectReviewProps) {
         onloginActive={() => {
           setActiveLoginToast(true);
         }}
-        onLike={()=>{
+        onLike={() => {
           if (!(userInfo.email && userInfo.name)) {
             setActiveLoginToast(true);
           } else {
@@ -175,7 +180,7 @@ export default function ProdectReview(props: ProdectReviewProps) {
                   price
                 </span>{" "}
                 <span className={`${fonts.font_11.className} text-white ml-2`}>
-                  900$
+                  {props.prodectDetails.price}$ {props.prodectDetails.discount?<strike>({props.prodectDetails.price+ (props.prodectDetails.price + (props.prodectDetails?.discount/100))})</strike>:null}
                 </span>
               </div>
               <div className="w-[80%]">
@@ -185,7 +190,7 @@ export default function ProdectReview(props: ProdectReviewProps) {
                   status
                 </span>{" "}
                 <span className={`${fonts.font_11.className} text-white ml-2`}>
-                  In Stock
+                  {props.prodectDetails?.quantity?"In Stock":"out of stock"}
                 </span>
               </div>
               <div className="w-[80%] flex items-center">
@@ -213,9 +218,14 @@ export default function ProdectReview(props: ProdectReviewProps) {
               </div>
 
               <div className="w-fit relative flex mt-2">
-                <div className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all" onClick={()=>setCartCount(value=>{
-                  return value+1
-                })}>
+                <div
+                  className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all"
+                  onClick={() =>
+                    setCartCount((value) => {
+                      return value + 1;
+                    })
+                  }
+                >
                   +
                 </div>
                 <div className="w-14 h-10  ">
@@ -228,12 +238,17 @@ export default function ProdectReview(props: ProdectReviewProps) {
                     min={0}
                   />
                 </div>
-                <div className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all" onClick={()=>setCartCount(value=>{
-                  if (value<=0) {
-                    return 0
+                <div
+                  className="h-10 w-10 relative text-white cursor-pointer border-2 border-white flex justify-center items-center text-2xl hover:scale-[0.99] transition-all"
+                  onClick={() =>
+                    setCartCount((value) => {
+                      if (value <= 0) {
+                        return 0;
+                      }
+                      return value - 1;
+                    })
                   }
-                  return value-1
-                })}>
+                >
                   -
                 </div>
               </div>
@@ -252,16 +267,123 @@ export default function ProdectReview(props: ProdectReviewProps) {
                 </div>
                 <div
                   className={`h-10 w-36 bg-white mr-2 rounded-sm flex items-center justify-center ${fonts.font_7.className} cursor-pointer`}
+                  onClick={() => {
+                    try {
+                      let listOfProdect = localStorage.getItem("cart_items");
+
+                      if (!listOfProdect) {
+                        const addItems = [
+                          {
+                            prodectName: props.prodectDetails?.header,
+                            prodectCount: cartCount,
+                            info: {
+                              ...props.prodectDetails,
+                            },
+                          },
+                        ];
+                        dispatch(injectProdect(addItems));
+                        localStorage.setItem(
+                          "cart_items",
+                          JSON.stringify(addItems)
+                        );
+                      } else {
+                        listOfProdect = JSON.parse(listOfProdect);
+                        const newItems = listOfProdect?.find(
+                          (element2, index2) => {
+                            return (
+                              element2.prodectName ==
+                              props?.prodectDetails?.header
+                            );
+                          }
+                        );
+                        if (!newItems) {
+                          const addItems = [
+                            ...listOfProdect,
+
+                            {
+                              prodectName: props.prodectDetails?.header,
+                              prodectCount: cartCount,
+                              info: {
+                                ...props.prodectDetails,
+                              },
+                            },
+                          ];
+                          dispatch(injectProdect(addItems));
+                          localStorage.setItem(
+                            "cart_items",
+                            JSON.stringify(addItems)
+                          );
+                        } else {
+                          const newItems = listOfProdect?.map((ele2, index) => {
+                            if (
+                              ele2?.prodectName == props.prodectDetails?.header
+                            ) {
+                              return {
+                                prodectName: props.prodectDetails?.header,
+                                prodectCount: cartCount,
+                                info: {
+                                  ...props.prodectDetails,
+                                },
+                              };
+                            }
+                            return ele2;
+                          });
+                          dispatch(injectProdect(newItems));
+                          localStorage.setItem(
+                            "cart_items",
+                            JSON.stringify(newItems)
+                          );
+                        }
+                      }
+
+                      dispatch(
+                        singleToastActive({
+                          icon: AddCartIcon,
+                          header: props.prodectDetails.header,
+                          description: props.prodectDetails.description,
+                        })
+                      );
+                    } catch (error) {
+                      const addItems = [
+                        {
+                          prodectName: props.prodectDetails?.header,
+                          prodectCount: cartCount,
+                          info: {
+                            ...props.prodectDetails,
+                          },
+                        },
+                      ];
+                      dispatch(injectProdect(addItems));
+                      localStorage.setItem(
+                        "cart_items",
+                        JSON.stringify(addItems)
+                      );
+                    }
+                  }}
                 >
                   Add-Cart
                 </div>
 
-                <div className="h-6 w-6 ml-2 cursor-pointer" onClick={()=>{
-                 if (!(userInfo.email && userInfo.name)) {
-                  setActiveLoginToast(true);
-                } else {
-                }
-                }}>
+                <div
+                  className="h-6 w-6 ml-2 cursor-pointer"
+                  onClick={() => {
+                    if (!(userInfo.email && userInfo.name)) {
+                      setActiveLoginToast(true);
+                    } else {
+                      favoritePost(
+                        {
+                          email: userInfo.email,
+                          prodect_name: props.prodectDetails?.header,
+                          convert:props.isLike
+                        },
+                        (res) => {
+                          if (res.data) {
+                          }
+                        }
+                      );
+                    }
+                  }}
+                >
                   <LikeIcon fill="white" />
                 </div>
                 {userInfo.email && userInfo.name ? (
@@ -299,6 +421,8 @@ export default function ProdectReview(props: ProdectReviewProps) {
                 image={`${element?.mainImage?.host}${element?.mainImage?.path}${element?.mainImage?.webUrl}`}
                 header={element.header}
                 des={element.description}
+                price={element.price}
+                discount={element.discount}
               />
             );
           })}

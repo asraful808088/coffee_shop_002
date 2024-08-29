@@ -43,6 +43,8 @@ const PaginatedItems = ({
                 header={item.header}
                 des={item.description}
                 image={`${item.mainImage.host}${item.mainImage.path}${item.mainImage.webUrl}`}
+                price={item.price}
+                discount={item.discount}
               />
             </div>
           );
@@ -139,13 +141,14 @@ export enum PRODECT_TYPE {
 }
 interface ProductBoxProps {
   prodectType: PRODECT_TYPE;
+  isCoffee:boolean
 }
 export default function ProductBox(props: ProductBoxProps) {
   const [prodect, setProdect] = useState([]);
   const [totalpagination, setTotalpagination] = useState(1);
   function getProdectitemns(page) {
     getItems({
-      prodectType: PRODECT_TYPE.TEA,
+      prodectType: props.isCoffee? PRODECT_TYPE.COFFEE:PRODECT_TYPE.TEA,
       pagination: page,
       callback: (value) => {
         if (value.data) {

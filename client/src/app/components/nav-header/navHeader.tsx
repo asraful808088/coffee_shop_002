@@ -2,24 +2,30 @@
 import CartIcon from "@/app/assets/icon/cart-large-minimalistic-svgrepo-com.svg";
 import FavoIcon from "@/app/assets/icon/favorite-svgrepo-com (1).svg";
 import CoffeeLogo from "@/app/assets/icon/logo.svg";
+import LogOutIcon from "@/app/assets/icon/logout.svg";
 import MenuIcon from "@/app/assets/icon/menu.svg";
 import LoginIcon from "@/app/assets/icon/noun-login-6292758.svg";
 import SearchIcon from "@/app/assets/icon/search-icon.svg";
+import removeUserInfo from "@/app/redux/userInfo/actionsName/removeInfo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import { fonts } from "../fonts/font";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 interface NavheaderProps {
   bgTransparent: boolean;
   hidddenLink: boolean;
   onMenuClick: any;
-  onloginActive:any
-  onLike:any
+  onloginActive: any;
+  onLike: any;
+  onCart: any;
 }
 export default function Navheader(props: NavheaderProps) {
   const userInfo = useSelector((state) => state.userInfo);
+  const cartInfo = useSelector((state) => state?.cartProdect?.cartOfList);
   const p = usePathname();
-
+  const dispatch = useDispatch();
   return (
     <div className="w-full relative ">
       <div
@@ -118,28 +124,54 @@ export default function Navheader(props: NavheaderProps) {
           <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] ">
             <SearchIcon fill="white" stroke="white" />
           </div>
-          
-          <div className="h-7 w-7  mx-2 cursor-pointer relative hidden md:block">
-            <div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
-              99+
-            </div>
+
+          <div
+            className="h-7 w-7  mx-2 cursor-pointer relative hidden md:block"
+            onClick={() => {
+              if (props.onCart) {
+                props.onCart();
+              }
+            }}
+          >
+            {cartInfo.length>0?<div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
+              {cartInfo.length}
+            </div>:null}
             <CartIcon />
           </div>
-          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] relative hidden md:block" onClick={()=>{
-            if (props.onLike) {
-              props.onLike()
-            }
-          }}>
-            {(userInfo.email && userInfo.name)?<div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
-              99+
-            </div>:null}
+          <div
+            className="h-7 w-7  mx-2 cursor-pointer p-[4px] relative hidden md:block"
+            onClick={() => {
+              if (props.onLike) {
+                props.onLike();
+              }
+            }}
+          >
+            {userInfo.email && userInfo.name ? (
+              <div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
+                99+
+              </div>
+            ) : null}
             <FavoIcon stroke="white" />
           </div>
-          
 
-          {!(userInfo.email && userInfo.name)? <div className="h-7 w-7   cursor-pointer scale-125 mx-3 hidden md:block" onClick={()=>props.onloginActive()}>
-            <LoginIcon fill="white" stroke="white" />
-          </div>:null}
+          {!(userInfo.email && userInfo.name) ? (
+            <div
+              className="h-7 w-7   cursor-pointer scale-125 mx-3 hidden md:block"
+              onClick={() => props.onloginActive()}
+            >
+              <LoginIcon fill="white" stroke="white" />
+            </div>
+          ) : (
+            <div
+              className="h-7 w-7 p-[2px]  cursor-pointer scale-125 mx-3 hidden md:flex  justify-center items-center"
+              onClick={() => {
+                localStorage.removeItem("token");
+                dispatch(removeUserInfo());
+              }}
+            >
+              <LogOutIcon fill="white" stroke="white" />
+            </div>
+          )}
           <div
             className="aspect-square w-8  mx-2 cursor-pointer p-[4px] block lg:hidden"
             onClick={props.onMenuClick}

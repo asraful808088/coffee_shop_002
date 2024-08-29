@@ -1,5 +1,7 @@
 import userLogin from "@/app/network/login/login";
+import injectUserInfo from "@/app/redux/userInfo/actionsName/inject_info";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { fonts } from "../fonts/font";
 interface LoginProps {
   onChangePage: any;
@@ -11,6 +13,7 @@ export default function Login(props: LoginProps) {
     password: "",
   });
   const [err, setErr] = useState(false);
+  const dispatch = useDispatch();
   return (
     <div className="h-full relative flex-grow p-10">
       <div className={`${fonts.font_3.className} text-5xl font-extrabold mt-3`}>
@@ -60,7 +63,17 @@ export default function Login(props: LoginProps) {
           onClick={() => {
             userLogin({ formInfo: userInfo }, (res) => {
               if (res?.data) {
-                localStorage.setItem("token", res.data.token);
+                setUserinfo({
+                  email: "",
+                  password: "",
+                })
+                dispatch(
+                  injectUserInfo({
+                    name: res?.data?.name,
+                    email: res?.data?.email,
+                  })
+                );
+                localStorage.setItem("token", res?.data?.token);
                 if (props.onClose) {
                   props.onClose();
                   setErr(false);

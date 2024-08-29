@@ -120,7 +120,7 @@ export default function Coffee() {
           <Navheader />
         </div>
       </div>
-      <ProductBox />
+      <ProductBox isCoffee/>
     </div>
   );
 }

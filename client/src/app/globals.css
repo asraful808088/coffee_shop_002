@@ -26,6 +26,7 @@ body {
   background-attachment: fixed;
 }
 
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -51,3 +52,5 @@ body {
 
 }
 }
+
+
