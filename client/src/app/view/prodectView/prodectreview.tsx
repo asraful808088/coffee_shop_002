@@ -3,6 +3,7 @@ import Bg from "@/app/assets/bg/bg4.png";
 import Image1 from "@/app/assets/coffee/andres-vera-BewKTZMv7V0-unsplash.jpg";
 import AddCartIcon from "@/app/assets/icon/cart-plus-svgrepo-com.svg";
 import LikeIcon from "@/app/assets/icon/favorite-svgrepo-com (1).svg";
+import ActiveLikeIcon from "@/app/assets/icon/favorite-svgrepo-com (2).svg";
 import OptionIcon from "@/app/assets/icon/option.svg";
 import TokenIcon from "@/app/assets/icon/token.svg";
 import TransitionIcon from "@/app/assets/icon/wallet-svgrepo-com.svg";
@@ -21,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+
 interface ProdectReviewProps {
   prodectDetails: Object;
   prodectItems: Array;
@@ -28,6 +30,7 @@ interface ProdectReviewProps {
 }
 export default function ProdectReview(props: ProdectReviewProps) {
   const navigate = useRouter();
+  const [prodectLike,setProdectLike]  = useState(props?.isLike??false)
   const [imageList, setImageList] = useState([]);
   const [activeImage, setActiveImage] = useState({});
   const [toastActive, setToastActive] = useState(false);
@@ -374,17 +377,20 @@ export default function ProdectReview(props: ProdectReviewProps) {
                         {
                           email: userInfo.email,
                           prodect_name: props.prodectDetails?.header,
-                          convert:props.isLike
+                          convert:!prodectLike,
+                          id: props.prodectDetails?._id
                         },
                         (res) => {
                           if (res.data) {
+                            setProdectLike(res.data?.convert)
                           }
                         }
                       );
                     }
                   }}
                 >
-                  <LikeIcon fill="white" />
+                  
+                  {!prodectLike?<LikeIcon fill="white" />:<ActiveLikeIcon fill="white" />}
                 </div>
                 {userInfo.email && userInfo.name ? (
                   <div

@@ -9,7 +9,7 @@ import json
 async def get_prodect_item(prodect_data:GetProdectItems):
     query =  prodect_items_extractor(prodect_data)
     prodects =  prodect_items_extractor(prodect_data,name="prodects")
-    result  = getProdectItems(prodects,query,n=10)
+    result  = getProdectItems(prodects,query)
     if result is not None:
         return {"success": True,"value":result["value"]}
     else:

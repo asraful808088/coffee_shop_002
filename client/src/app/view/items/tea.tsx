@@ -16,11 +16,12 @@ import "./style.css";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
+import LoginAndCreateToast from "@/app/components/login_and_create/toast";
+import NavMenu from "@/app/components/navMenu/navMenu";
 import SwiperCore from "swiper/core";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-
 // import required modules
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 SwiperCore.use([Autoplay, Pagination]);
@@ -101,8 +102,19 @@ function Slider() {
 }
 
 export default function TeaPage() {
+  const [activeNav,setActivenav]  = useState(false)
+  const [toastActive, setToastActive] = useState(false);
   return (
     <div className="w-full relative">
+      <NavMenu activeNav={activeNav} onClose={()=>{setActivenav(false)}} onLogin={() => {
+          setToastActive(true);
+        }}/>
+        <LoginAndCreateToast
+        activeToast={toastActive}
+        onCloseToast={() => {
+          setToastActive(false);
+        }}
+      />
       <div className="w-full relative aspect-[1/1.5] sm:h-[850px] md:h-[650px] xl:h-[900px] ">
         <div className="w-full h-full absolute flex flex-col">
           {/* <div className=" w-full h-28 z-10 relative "></div> */}
@@ -127,7 +139,9 @@ export default function TeaPage() {
           </div>
         </div>
         <div className="z-20">
-          <Navheader />
+        <Navheader  onMenuClick={()=>{
+            setActivenav(!activeNav)
+          }}/>
         </div>
       </div>
 

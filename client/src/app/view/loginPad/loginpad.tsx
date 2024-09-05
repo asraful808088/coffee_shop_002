@@ -12,7 +12,10 @@ export default function Loginpad() {
   const [isCart,setCartStatus] = useState(false) 
   return (
     <>
-      <Sidebar isCart={isCart} activeNav={sideActive} onClose={()=>{
+      <Sidebar isCart={isCart} activeNav={sideActive} onLogin={()=>{
+        setToastActive(true)
+        setSideActive(false)
+      }} onClose={()=>{
         setSideActive(false)
       }} />
       <LoginAndCreateToast
@@ -22,6 +25,7 @@ export default function Loginpad() {
         }}
       />
       <HomeDisplay
+        
         onLike={() => {
           if (!(userInfo.email && userInfo.name)) {
             setToastActive(true);

@@ -1,10 +1,10 @@
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
-def getProdectItems(prodect,query,n=10)-> None | dict:
+def getProdectItems(prodect,query)-> None | dict:
     try:
          prodectData = {}
          for item in prodect:
-             prodectData[item.id]=f'''{item.header} {item.aiDescription} {item.description}'''
+             prodectData[item.id]=f'''{item.header} {item.aiDescription}'''
          items = []
          keys = []
          for i in prodectData:
@@ -14,11 +14,14 @@ def getProdectItems(prodect,query,n=10)-> None | dict:
          all_sentences = items + [query]
          tfidf_matrix = vectorizer.fit_transform(all_sentences)
          similarity_matrix = cosine_similarity(tfidf_matrix)
-         calcItem = similarity_matrix[len(items)][:-1]
-         
-         return {"value":calcItem.tolist()}
+         searchQuery = []
+         for i in range(len(all_sentences)-1):
+             searchQuery.append({
+                  "_id":keys[i],
+                  "rate":similarity_matrix[len(similarity_matrix)-1][i]
+             }) 
+         return {"value":searchQuery}
     except:
          return None
-    
     
     

@@ -5,14 +5,18 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ListItems0001 from "../ListItems0001/ListItems0001";
 import { fonts } from "../fonts/font";
+
 interface SidebarProps {
   activeNav: boolean;
   onClose: any;
   isCart: boolean;
+  onLogin:any
+
 }
 export default function Sidebar(props: SidebarProps) {
   const [cartItems, setCartItems] = useState([]);
   const cartInfo = useSelector((state) => state?.cartProdect?.cartOfList);
+  const favoriteItems = useSelector((state) => state?.favoriteReducer?.items);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,6 +54,8 @@ export default function Sidebar(props: SidebarProps) {
             {cartItems.map((element, index) => {
               return (
                 <ListItems0001
+                info={element}
+                onCloseSlide={()=>props.onLogin()}
                   onDelete={() => {
                     const items = JSON.parse(
                       localStorage.getItem("cart_items")
@@ -75,8 +81,8 @@ export default function Sidebar(props: SidebarProps) {
           </>
         ) : (
           <>
-            {[].map((element, index) => {
-              return <ListItems0001 key={index} />;
+            {favoriteItems.map((element, index) => {
+              return <ListItems0001  name={element?.header} price={element?.price} key={index}  info={element}/>;
             })}
           </>
         )}

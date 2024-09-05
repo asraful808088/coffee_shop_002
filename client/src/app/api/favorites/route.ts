@@ -1,25 +1,38 @@
-import getFavorite from "@/lib/mongo/operation/get/getFavoriteItems";
-import insertFavorite from "@/lib/mongo/operation/insert/insertFavorite";
-import Favorite from "@/lib/mongo/Schema/favorite/favorite";
+import { redisDB } from "@/lib/radius/config";
 import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
+  if (!redisDB.isOpen) {
+    redisDB.connect();
+  }
   const formData = await req.formData();
   const email = formData.get("email");
   const prodect_name = formData.get("prodect_name");
   const convert = formData.get("convert");
+  const id = formData.get("id");
   let convertNow = false;
   let data = null;
   if (convert == "true") {
     convertNow = true;
     try {
-      await insertFavorite({ email, prodect_name });
-      data = await getFavorite({ email, prodect_name });
-    } catch (error) {}
+      
+      const items =  await redisDB.hGet("favorite",id)
+     
+      const favoriteItem = JSON.parse(items) 
+      favoriteItem.push(email)
+      await redisDB.hSet("favorite",id,JSON.stringify(favoriteItem))
+    } catch (error) {
+    }
   } else {
     convertNow = false;
     try {
-      await Favorite.deleteMany({ email, prodect_name });
-    } catch (error) {}
+      const items =  await redisDB.hGet("favorite",id)
+      const favoriteItem = JSON.parse(items).filter((item,index)=>item!=email)
+      await redisDB.hSet("favorite",id,JSON.stringify(favoriteItem))
+
+    } catch (error) {
+    }
   }
   return NextResponse.json({ success: true, convert: convertNow, data });
 }
+
+

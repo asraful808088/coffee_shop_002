@@ -10,7 +10,7 @@ export default function Marketing001() {
       <div className="w-full opacity-5 absolute h-full">
         <Image
           src={Bg}
-          alt=""
+          alt="aa"
           className="w-full"
           objectFit="cover"
           layout="fill"
@@ -20,7 +20,7 @@ export default function Marketing001() {
         <div className="w-[450px]  xl:w-[350px] mx-1 xl:mx-20  relative mt-5 md:mb-10">
           <div className="w-full relative h-[200px] flex justify-center items-center  translate-x-4">
             <div className=" min-w-[200px] md:min-w-[300px] aspect-square relative">
-              <Image src={ImageItem} alt="" layout="fill" objectFit="contain" />
+              <Image src={ImageItem} alt="aaaaaa" layout="fill" objectFit="contain" />
             </div>
           </div>
           <div
@@ -41,7 +41,7 @@ export default function Marketing001() {
             <div className=" min-w-[180px] md:min-w-[250px]  aspect-square relative">
               <Image
                 src={ImageItem3}
-                alt=""
+                alt="a"
                 layout="fill"
                 objectFit="contain"
               />
@@ -65,7 +65,7 @@ export default function Marketing001() {
             <div className=" min-w-[180px] md:min-w-[250px]  aspect-square relative">
               <Image
                 src={ImageItem2}
-                alt=""
+                alt="aa11a"
                 layout="fill"
                 objectFit="contain"
               />

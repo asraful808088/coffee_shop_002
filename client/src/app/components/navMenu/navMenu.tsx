@@ -7,10 +7,11 @@ import AboutIcon from "@/app/assets/icon/info.svg";
 import ItemsIcon from "@/app/assets/icon/items.svg";
 import CoffeeLogo from "@/app/assets/icon/logo.svg";
 import ServiceIcon from "@/app/assets/icon/service.svg";
+import { injectProdect } from "@/app/redux/cart/actions";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fonts } from "../fonts/font";
 import ListItems0001 from "../ListItems0001/ListItems0001";
 const tabItems = {
@@ -21,11 +22,14 @@ const tabItems = {
 interface NavMenuProps {
   activeNav: boolean;
   onClose: any;
+  onLogin:any
 }
 export default function NavMenu(props: NavMenuProps) {
   const [tabActiveItems, setTabActiveItems] = useState(tabItems.MENU);
   const cartInfo = useSelector((state) => state?.cartProdect?.cartOfList);
-
+  const favoInfo = useSelector((state) => state?.favoriteReducer?.items);
+  const dispatch = useDispatch()
+  const userInfo  = useSelector((state) => state?.userInfo);
   return (
     <>
       <div
@@ -83,7 +87,15 @@ export default function NavMenu(props: NavMenuProps) {
               tabActiveItems == tabItems.FAVORATE ? "border-b-2" : ""
             }`}
             onClick={() => {
-              setTabActiveItems(tabItems.FAVORATE);
+              if (userInfo?.email && userInfo?.name) {
+                setTabActiveItems(tabItems.FAVORATE);
+              }else{
+                if (props.onLogin) {
+                  props.onLogin()
+                }
+                
+              }
+              
             }}
           >
             Favorite
@@ -96,25 +108,39 @@ export default function NavMenu(props: NavMenuProps) {
             ) : tabActiveItems == tabItems.CART ? (
               <div className=" h-full w-full pb-5">
                 {cartInfo.map((element, index) => {
+                  
                   return (
                     <ListItems0001
+                    info={element}
                      onDelete={()=>{
-                      console.log("12313123123")
+                      const items = JSON.parse(
+                        localStorage.getItem("cart_items")
+                      );
+                      const newItems = items?.filter((element2, index) => {
+                        return element2?.prodectName != element?.prodectName;
+                      });
+  
+                      dispatch(injectProdect(newItems));
+                      localStorage.setItem(
+                        "cart_items",
+                        JSON.stringify(newItems)
+                      );
                      }}
                       name={element?.prodectName}
                       prodectCount={element?.prodectCount}
                       price={element?.info?.price}
                       activeCart
                       key={index}
+                      
                     />
                   );
                 })}
               </div>
             ) : (
               <div className=" h-full w-full">
-                {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
+                {favoInfo.map(
                   (element, index) => {
-                    return <ListItems0001 key={index} />;
+                    return <ListItems0001  onCloseSlide={()=>props.onLogin()} name={element?.header} price={element?.price} key={index}  info={element}/>;
                   }
                 )}
               </div>
@@ -155,10 +181,12 @@ interface NavItemsProps {
   icon: any;
   href: string;
   active: boolean;
+  mhref:Array
 }
 function NavItems(props: NavItemsProps) {
+  const p = usePathname();
   return (
-    <Link href={props.href ?? "/"}>
+    !props.mhref?<Link href={props.href ?? "/"}>
       <div className="w-full relative mt-5 cursor-pointer ">
         <div className="w-full relative   flex items-center">
           <div className="aspect-square w-7 relative mr-3 ml-1">
@@ -172,9 +200,46 @@ function NavItems(props: NavItemsProps) {
           ) : null}
         </div>
       </div>
-    </Link>
+    </Link>:<div className="w-full relative mt-5 cursor-pointer flex flex-col group">
+        <div className="w-full relative   flex items-center">
+          <div className="aspect-square w-7 relative mr-3 ml-1">
+            {props.icon ? <props.icon /> : <DemoIcon />}
+          </div>
+          <div className={`text-white ${fonts.font_4.className} text-lg`}>
+            {props.name ?? "Blog"}
+          </div>
+          {props.active ? (
+            <div className="w-1 h-5 bg-white absolute right-1 rounded-lg"></div>
+          ) : null}
+        </div>
+        <div className={`w-full relative ${!props.active?"group-hover:block hidden":"block"}`}>
+        {
+          props?.mhref?.map((ele,index)=>{
+            return <Link key={index} href={ele?.href} className={`text-white mt-3 ml-3 ${fonts.font_4.className} flex items-center`} >
+                      <div className={`h-2 w-2 border border-white rotate-45 mr-2 ${p==ele?.href?"bg-white":""}`} >
+                        
+                      </div>
+                      {ele?.name}
+                    </Link>
+          })
+        }
+        </div>
+      </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface ListOfMemuItemsProps {}
 function ListOfMemuItems() {
@@ -199,6 +264,16 @@ function ListOfMemuItems() {
         name="Items"
         icon={ItemsIcon}
         active={p == "/items/tea" || p == "/items/coffee"}
+        mhref={[{
+          name:"tea",
+          href:"/items/tea",
+          href:"/items/tea"
+        },{
+           name:"coffee",
+          href:"/items/coffee",
+          href:"/items/coffee"
+
+        },]}
       />
       <NavItems
         href="/blog"

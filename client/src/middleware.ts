@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
   );
   res.headers.append(
     "Access-Control-Allow-Headers",
-    "Authorization, Content-Type"
+    "Authorization, Content-Type",
   );
   return res;
 }

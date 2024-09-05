@@ -14,8 +14,10 @@ import removeUserInfo from "@/app/redux/userInfo/actionsName/removeInfo";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Loginpad from "../loginPad/loginpad";
+import useFavorite from "@/app/hooks/getfavorite/getFavorite";
 export default function Home() {
   const dispatch = useDispatch();
+  useFavorite()
   const [userInfo] = useAuth();
   useEffect(() => {
     if (userInfo.email && userInfo.name) {

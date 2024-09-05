@@ -9,12 +9,24 @@ import NavMenu from "@/app/components/navMenu/navMenu";
 import Waiters from "@/app/components/waiters/waiter";
 import Image from "next/image";
 import { useState } from "react";
+import LoginAndCreateToast from "@/app/components/login_and_create/toast";
 export default function AboutUs() {
   const [activeNav, setActiveNav] = useState(false);
+  const [toastActive, setToastActive] = useState(false);
   return (
     <>
+    
       <div className="w-full relative h-[400px] md:h-[550px] lg:h-[650px] xl:h-[750px] bg-slate-400">
-        <NavMenu activeNav={activeNav} onClose={() => setActiveNav(false)} />
+     
+        <NavMenu activeNav={activeNav} onClose={() => setActiveNav(false)}    onLogin={() => {
+          setToastActive(true);
+        }}/>
+         <LoginAndCreateToast
+        activeToast={toastActive}
+        onCloseToast={() => {
+          setToastActive(false);
+        }}
+      />
         <div className="w-full h-full absolute flex flex-col">
           <div className=" w-full h-28 z-10 relative "></div>
           <div className="bg-black bg-opacity-50 w-full flex-grow z-10 relative flex justify-center items-center flex-col">

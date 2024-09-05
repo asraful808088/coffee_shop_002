@@ -9,9 +9,12 @@ import SearchIcon from "@/app/assets/icon/search-icon.svg";
 import removeUserInfo from "@/app/redux/userInfo/actionsName/removeInfo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fonts } from "../fonts/font";
-import { useEffect } from "react";
+import Loading from "../loading/loading";
+import Toast from "../toast/toast";
+import { searchFatch } from "@/app/network/search/search";
 
 interface NavheaderProps {
   bgTransparent: boolean;
@@ -24,10 +27,93 @@ interface NavheaderProps {
 export default function Navheader(props: NavheaderProps) {
   const userInfo = useSelector((state) => state.userInfo);
   const cartInfo = useSelector((state) => state?.cartProdect?.cartOfList);
+  const favoInfo = useSelector((state) => state?.favoriteReducer?.items);
   const p = usePathname();
   const dispatch = useDispatch();
+  const [searchBox, setSearchBox] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchItem,setSearchItems] = useState([])
+  const [timeTracker,setTimeTracker] = useState(null)
   return (
     <div className="w-full relative ">
+      <Toast className="w-full" center activetoast={searchBox}>
+        <div className=" w-full max-w-[700px] min-h-[350px] bg-slate-600 rounded-md mx-1 px-1">
+          <div className="w-full flex justify-end items-center px-2 pt-2 pr-3">
+            <div
+              className="rotate-45 font-extrabold text-2xl text-white cursor-pointer"
+              onClick={() => {
+                setSearchBox(false);
+              }}
+            >
+              +
+            </div>
+          </div>
+          <div className="h-10 bg-slate-900 rounded-md  w-full max-w-[450px] m-auto mt-10 flex">
+            <div className="h-10 aspect-square relative  p-2">
+              <SearchIcon fill="white" stroke="white" />
+            </div>
+            <div className="h-10 relative w-full  bg-transparent">
+              <input
+                type="text"
+                name=""
+                className={`w-full h-full relative bg-transparent border-none outline-none text-white  ${fonts.font_5.className}`}
+                placeholder="Search"
+                id=""
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target?.value);
+                  setSearchItems([])
+                  if (timeTracker) {
+                    clearTimeout(timeTracker)
+                  }
+                 const timeTrack =  setTimeout(() => {
+                  if (search.length!=0) {
+                    searchFatch(search,(res)=>{
+                     if (res.data) {
+                      console.log(res)
+                     }
+                    })
+                  }
+                  }, 2000);
+                  
+                  setTimeTracker(timeTrack)
+                }}
+              />
+            </div>
+          </div>
+          <div className=" w-full max-w-[450px] max-h-[450px]  mt-2  m-auto overflow-y-scroll">
+            {!true  ? (
+              [1, 1, 1, 1, 1, 1].map((element, index) => (
+                <div
+                  key={index}
+                  className="min-h-20 w-full  flex items-center bg-white mb-1 cursor-pointer"
+                  onClick={() => {}}
+                >
+                  <div className="min-w-20 aspect-square relative bg-blue-900"></div>
+                  <div className="flex-grow h-full px-1">
+                    <div className={`${fonts.font_5.className}`}>
+                      Prodect-Name
+                    </div>
+                    <div className="text-xs">
+                      {!("".length >= 170)
+                        ? `${"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Amet culpa quia nisi illum eos sit a reprehenderit possimus non dolore quas animi quo repellat quos vero repudiandae, laudantium, consequuntur quae.".slice(
+                            0,
+                            170
+                          )}...`
+                        : ""}
+                    </div>
+                    <div className="text-xs mt-1 mb-2">440$</div>
+                  </div>
+                </div>
+              ))
+            ) : searchItem.length==0 && search.length!=0?(
+              <div className="h-full w-full flex justify-center items-center relative p-10">
+                <Loading />
+              </div>
+            ):null}
+          </div>
+        </div>
+      </Toast>
       <div
         className={` h-28  w-full left-0 top-0 absolute  ${
           props.bgTransparent ? "" : "bg-black"
@@ -47,7 +133,7 @@ export default function Navheader(props: NavheaderProps) {
           } w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%]`}
         ></div>
         <div
-          className={`w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%] h-full  ${
+          className={`z-20 w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%] h-full  ${
             !props.hidddenLink ? "lg:flex hidden" : "hidden"
           }  justify-center items-center coffee-font ${
             fonts.font_1.className
@@ -121,7 +207,12 @@ export default function Navheader(props: NavheaderProps) {
           </Link>
         </div>
         <div className="w-[38%] lg:w-[33.333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333%] h-full  flex items-center justify-end">
-          <div className="h-7 w-7  mx-2 cursor-pointer p-[4px] ">
+          <div
+            className="h-7 w-7  mx-2 cursor-pointer p-[4px] "
+            onClick={() => {
+              setSearchBox(true);
+            }}
+          >
             <SearchIcon fill="white" stroke="white" />
           </div>
 
@@ -133,9 +224,11 @@ export default function Navheader(props: NavheaderProps) {
               }
             }}
           >
-            {cartInfo.length>0?<div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
-              {cartInfo.length}
-            </div>:null}
+            {cartInfo.length > 0 ? (
+              <div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
+                {cartInfo.length}
+              </div>
+            ) : null}
             <CartIcon />
           </div>
           <div
@@ -146,9 +239,9 @@ export default function Navheader(props: NavheaderProps) {
               }
             }}
           >
-            {userInfo.email && userInfo.name ? (
+            {userInfo.email && userInfo.name && favoInfo.length > 0 ? (
               <div className="h-5 w-5 flex items-center justify-center bg-gray-600 absolute text-[9px] rounded-full text-white -right-2 -top-1 ">
-                99+
+                {favoInfo.length}
               </div>
             ) : null}
             <FavoIcon stroke="white" />

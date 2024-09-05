@@ -78,9 +78,15 @@ export default function HomeDisplay(props: HomeDisplay): React.FC {
   }
   return (
     <div className="w-full  h-[480px]  md:h-[600px] xl:h-[1000px] grid grid-cols-8 grid-rows-8 relative">
-      <NavMenu activeNav={activeNav} onClose={() => setActiveNav(false)} />
+      <NavMenu activeNav={activeNav} onClose={() => setActiveNav(false)} onLogin={()=>{
+        setActiveNav(false)
+        if (props.onLogin) {
+          props.onLogin()
+        }
+      }}/>
       <div className=" h-[480px] md:h-[600px] xl:h-[1000px] w-full bg-black bg-opacity-40 absolute z-20 flex flex-col top-0 left overflow-hidden">
         <Navheader
+          
           onloginActive={() => props.onLogin()}
           onLike={() =>{
             props.onLike()

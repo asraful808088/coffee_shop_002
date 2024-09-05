@@ -14,15 +14,17 @@ import "./style.css";
 import ProductBox from "@/app/components/prodectBox/prodectBox";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import NavMenu from "@/app/components/navMenu/navMenu";
 
 // Import Swiper styles
 import SwiperCore from "swiper/core";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-
+import LoginAndCreateToast from "@/app/components/login_and_create/toast";
 // import required modules
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
+import { useState } from "react";
 SwiperCore.use([Autoplay, Pagination]);
 function Slider() {
   return (
@@ -91,8 +93,19 @@ function Slider() {
 }
 
 export default function Coffee() {
+  const [activeNav,setActivenav]  = useState(false)
+  const [toastActive, setToastActive] = useState(false);
   return (
     <div className="w-full">
+      <NavMenu activeNav={activeNav} onClose={()=>{setActivenav(false)}} onLogin={() => {
+          setToastActive(true);
+        }}/>
+        <LoginAndCreateToast
+        activeToast={toastActive}
+        onCloseToast={() => {
+          setToastActive(false);
+        }}
+      />
       <div className="w-full relative h-[900px] ">
         <div className="w-full h-full absolute flex flex-col">
           {/* <div className=" w-full h-28 z-10 relative "></div> */}
@@ -117,7 +130,9 @@ export default function Coffee() {
           </div>
         </div>
         <div className="z-20">
-          <Navheader />
+          <Navheader  onMenuClick={()=>{
+            setActivenav(!activeNav)
+          }}/>
         </div>
       </div>
       <ProductBox isCoffee/>
